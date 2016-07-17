@@ -1,3 +1,5 @@
+package com.elite.tools.markfox.parser;
+
 public class HTMLToken {
     private boolean isTag;
     private String text;

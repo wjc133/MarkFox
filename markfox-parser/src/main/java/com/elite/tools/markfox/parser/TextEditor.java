@@ -33,6 +33,8 @@ software, even if advised of the possibility of such damage.
 
 */
 
+package com.elite.tools.markfox.parser;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
