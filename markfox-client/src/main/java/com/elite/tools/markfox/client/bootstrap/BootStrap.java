@@ -1,143 +1,289 @@
-package com.elite.tools.markfox.client.bootstrap;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-/**
- * Created by wjc133
- * Date: 2016/6/15
- * Time: 20:38
- */
-public class BootStrap {
-    JFrame mainJFrame;
-    Container con;
-    //JPanel Panel;
-    JScrollPane JSPane1,JSPane2;
-    JTextArea text1,text2;
-    JMenuBar mainMenuBar;
-    JMenu fileMenu,editMenu,formatMenu,helpMenu,insertMenu,checkMenu,toolMenu;
+	package com.elite.tools.markfox.client.bootstrap;
+    import java.awt.*;
+	import java.awt.event.*;
+	import javax.swing.*;
+	import javax.swing.border.EmptyBorder;
 
-    JMenuItem newItem,openItem,saveItem,saveasItem,pageItem,printItem,exitItem;
-
-    JMenuItem undoItem,cutItem,copyItem,pasteItem,findItem,replaceItem,selectallItem;
-
-    JCheckBoxMenuItem wrapItem;
-    JMenuItem fontItem;
-
-    JMenuItem helpItem,aboutItem;
-    public BootStrap()
+	public class BootStrap
     {
-        mainJFrame=new JFrame("MarkFox");
-        con=mainJFrame.getContentPane();
-        con.setLayout(new BorderLayout());
 
-        text1=new JTextArea(10,48);
-        text1.setTabSize(4);
-        text1.setFont(new Font("ÂÆã‰Ωì",Font.BOLD,16));
-        text1.setLineWrap(true);
-        text1.setWrapStyleWord(true);
+		JFrame mainJFrame;
+		Container con;
+		JPanel Panel,Panel1;
+		JMenuBar mainMenuBar;
+		JScrollPane JSPane1=new JScrollPane(),JSPane2=new JScrollPane();
+		JTextArea text1,text2;
+		JMenu fileMenu,editMenu,formatMenu,helpMenu,insertMenu,checkMenu,toolMenu;
 
-        text2=new JTextArea(10,49);
-        text2.setFont(new Font("ÂÆã‰Ωì",Font.BOLD,16) );
-        text2.setLineWrap(true);
-        text2.setWrapStyleWord(true);
-        //Panel=new JPanel();
+		JMenuItem newItem,openItem,saveItem,saveasItem,pageItem,printItem,exitItem;
 
-        JSPane1=new JScrollPane(text1);
-        JSPane2=new JScrollPane(text2);
-        //JSPane1.add(text1);
-        //JSPane2.add(text2);
-        //Panel.add(JSPane1,BorderLayout.WEST);
-        //Panel.add(JSPane2,BorderLayout.EAST);
+		JMenuItem undoItem,cutItem,copyItem,pasteItem,findItem,replaceItem,selectallItem;
 
-        text1.setBounds(12,27,425,476);
-        text2.setBounds(443,27,423,476);
-        con.add(JSPane1,BorderLayout.WEST);
-        con.add(JSPane2,BorderLayout.EAST);
+		JCheckBoxMenuItem wrapItem;
+		JMenuItem fontItem;
 
-        createMenu();
+		JMenuItem helpItem,aboutItem;
 
-        mainJFrame.setJMenuBar(mainMenuBar);
-        //	mainJFrame.add(Panel,BorderLayout.CENTER);
+	public BootStrap()
+	{
+
+		initWindow();
+//		mainJFrame=new JFrame("MarkFox");
+//		mainJFrame.pack();
+//		mainJFrame.setSize(894, 533);
+//		Dimension dim = mainJFrame.getSize();
+//		Dimension dim2=Toolkit.getDefaultToolkit().getScreenSize();
+//		Panel=new JPanel();
+//		int w=(int)(dim.getWidth()/2);
+//		int h=(int)dim.getHeight();
+//		con=mainJFrame.getContentPane();
+
+		mainJFrame.addWindowStateListener(new WindowStateListener() {
+			public void windowStateChanged(WindowEvent state) {
+
+				//if(state.getNewState() == 1 || state.getNewState() == 7) {
+				//	System.out.println("¥∞ø⁄◊Ó–°ªØ");
+				//}else if(state.getNewState() == 0) {
+				//	System.out.println("¥∞ø⁄ª÷∏¥µΩ≥ı º◊¥Ã¨");
+				//}else
+				if (state.getNewState() == 6) {
+					System.out.println("¥∞ø⁄◊Ó¥ÛªØ");
+					initWindow();
+
+				}else if(state.getNewState() == 0) {
+				System.out.println("¥∞ø⁄ª÷∏¥µΩ≥ı º◊¥Ã¨");
+					reinitWindow();
+			}
+		}
+
+		});
+
+//		text1=new JTextArea("øÌ£∫"+w);
+//		text1.setTabSize(4);
+//		text1.setFont(new Font("ÀŒÃÂ",Font.BOLD,16));
+//		text1.setLineWrap(true);
+//		text1.setWrapStyleWord(true);
+//		text1.setSize(w,h);
+//
+//		text2=new JTextArea("∏ﬂ£∫"+h);
+//		text2.setFont(new Font("ÀŒÃÂ",Font.BOLD,16) );
+//		text2.setLineWrap(true);
+//		text2.setWrapStyleWord(true);
+//		text2.setSize(w,h);
+//
+//		JSPane1=new JScrollPane(text1);
+//		JSPane2=new JScrollPane(text2);
+
+
+//		con.add(JSPane1,BorderLayout.WEST);
+//		con.add(JSPane2);
+//		con.add(Panel,BorderLayout.NORTH);
+
+//
+//		mainJFrame.setJMenuBar(mainMenuBar);
+
+
+//		mainJFrame.setVisible(true);
+//		mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+	public void initWindow()
+	{
+		JPanel Panel1;
+
+		mainJFrame=new JFrame("MarkFox");
+		mainJFrame.pack();
+		mainJFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		Dimension dim = mainJFrame.getSize();
+
+		Dimension dim2=Toolkit.getDefaultToolkit().getScreenSize();
+		Panel=new JPanel();
+
+		Panel1=new JPanel();
+		Panel1.setLayout(new BorderLayout());
+		Panel1.removeAll();
+		Panel1.repaint();
+		int w=(int)(dim.getWidth()/2*10);
+		int h=(int)dim.getHeight()*15;
+		con=mainJFrame.getContentPane();
+
+		text1=new JTextArea();
+	//	text1.setTabSize(4);
+		text1.setFont(new Font("ÀŒÃÂ",Font.BOLD,16));
+		text1.setLineWrap(true);
+	//	text1.setWrapStyleWord(true);
+		text1.setSize(w,h);
+
+		text2=new JTextArea();
+		text2.setFont(new Font("ÀŒÃÂ",Font.BOLD,16) );
+		text2.setLineWrap(true);
+	//	text2.setWrapStyleWord(true);
+		text2.setSize(w,h);
+
+		JSPane1=new JScrollPane(text1);
+		JSPane2=new JScrollPane(text2);
+		Panel1.add(JSPane1,BorderLayout.WEST);
+		Panel1.add(JSPane2);
+		//con.add(JSPane2,BorderLayout.EAST);
+		Panel1.add(Panel,BorderLayout.NORTH);
+		con.add(Panel1);
+		mainJFrame.setJMenuBar(mainMenuBar);
+		createMenu();
+		tool();
+
+		mainJFrame.setVisible(true);
+		mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+	public void reinitWindow()
+	{
         mainJFrame.pack();
-        //con.add(Panle,BorderLayout.CENTER);
-        //con.add(JSPane2);
+		mainJFrame.setSize(894, 533);
 
-        mainJFrame.setSize(894, 533);
-        mainJFrame.setVisible(true);
-        mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-    public void createMenu()
-    {
-        mainMenuBar= new JMenuBar();
-        fileMenu=new JMenu("Êñá‰ª∂");
-        editMenu=new JMenu("ÁºñËæë");
-        formatMenu=new JMenu("Ê†ºÂºè");
-        insertMenu =new JMenu("ÊèíÂÖ•");
-        checkMenu =new JMenu("Êü•Áúã");
-        toolMenu = new JMenu("Â∑•ÂÖ∑");
-        helpMenu=new JMenu("Â∏ÆÂä©");
+		Dimension dim = mainJFrame.getSize();
+		//Dimension dim2=Toolkit.getDefaultToolkit().getScreenSize();
+
+		Panel=new JPanel();
+		Panel1=new JPanel();
+		Panel1.setLayout(new BorderLayout());
+		Panel1.removeAll();
+		Panel1.repaint();
+
+		int w=(int)(dim.getWidth()/2);
+		int h=(int)dim.getHeight();
+		con=mainJFrame.getContentPane();
+
+		text1=new JTextArea();
+	//	text1.setTabSize(4);
+		text1.setFont(new Font("ÀŒÃÂ",Font.BOLD,16));
+	//	text1.setLineWrap(true);
+	//	text1.setWrapStyleWord(true);
+		text1.setSize(w,h);
+
+		text2=new JTextArea();
+		text2.setFont(new Font("ÀŒÃÂ",Font.BOLD,16) );
+	//	text2.setLineWrap(true);
+	//	text2.setWrapStyleWord(true);
+		text2.setSize(w,h);
+
+		JSPane1=new JScrollPane(text1);
+		JSPane2=new JScrollPane(text2);
+
+//		Panel1.add(JSPane1,BorderLayout.WEST);
+//		Panel1.add(JSPane2);
+//		Panel1.add(Panel,BorderLayout.NORTH);
+		con.add(Panel,BorderLayout.NORTH);
+		con.add(JSPane1,BorderLayout.WEST);
+		con.add(JSPane2);
+
+	//	con.add(Panel1);
+		mainJFrame.setJMenuBar(mainMenuBar);
+		createMenu();
+		tool();
+		mainJFrame.setVisible(true);
+		mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	public void tool()
+	{
+		JButton button1 =new JButton("B ");
+		JButton button2 =new JButton("I ");
+		JButton button3 =new JButton("H1");
+		JButton button4 =new JButton("H2");
+		JButton iconButton1 =new JButton();
+		button1.setSize(15,15);
+		button2.setSize(15,15);
+		button3.setSize(15,15);
+		button4.setSize(15,15);
+		iconButton1.setSize(15,15);
+
+	//	iconButton1.setIcon(new ImageIcon(BootStrap.class.getResource("file.jpg")));
+
+		JToolBar bar = new JToolBar();
+
+		bar.add(button1);
+		bar.add(button2);
+		bar.add(button3);
+		bar.add(button4);
+		bar.add(iconButton1);
+
+		BorderLayout bord = new BorderLayout();
+		//Panel.setLayout(bord);
+		//bar.setLayout(null);
+		Panel.setLayout(bord);
+		Panel.add("North",bar);
+
+	}
+	public void createMenu()
+	{
+		mainMenuBar= new JMenuBar();
+		fileMenu=new JMenu("Œƒº˛");
+		editMenu=new JMenu("±‡º≠");
+		formatMenu=new JMenu("∏Ò Ω");
+		insertMenu =new JMenu("≤Â»Î");
+		checkMenu =new JMenu("≤Èø¥");
+		toolMenu = new JMenu("π§æﬂ");
+		helpMenu=new JMenu("∞Ô÷˙");
 
 
+		mainMenuBar.add(fileMenu);
+		newItem=new JMenuItem("–¬Ω®");
+		openItem=new JMenuItem("¥Úø™");
+		saveItem=new JMenuItem("±£¥Ê");
+		saveasItem=new JMenuItem("¡Ì¥ÊŒ™");
+		pageItem=new JMenuItem("“≥√Ê");
+		printItem=new JMenuItem("¥Ú”°");
+		exitItem=new JMenuItem("ÕÀ≥ˆ");
+		
+		fileMenu.add(newItem);
+		fileMenu.add(openItem);
+		fileMenu.add(saveasItem);
+		fileMenu.addSeparator();
+		fileMenu.add(pageItem);
+		fileMenu.add(printItem);
+		fileMenu.addSeparator();
+		fileMenu.add(exitItem);
+		
 
-        mainMenuBar.add(fileMenu);
-        newItem=new JMenuItem("Êñ∞Âª∫");
-        openItem=new JMenuItem("ÊâìÂºÄ");
-        saveItem=new JMenuItem("‰øùÂ≠ò");
-        saveasItem=new JMenuItem("Âè¶Â≠ò‰∏∫");
-        pageItem=new JMenuItem("È°µÈù¢");
-        printItem=new JMenuItem("ÊâìÂç∞");
-        exitItem=new JMenuItem("ÈÄÄÂá∫");
 
-        fileMenu.add(newItem);
-        fileMenu.add(openItem);
-        fileMenu.add(saveasItem);
-        fileMenu.addSeparator();
-        fileMenu.add(pageItem);
-        fileMenu.add(printItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
+		mainMenuBar.add(editMenu);
+		undoItem=new JMenuItem("≥∑œ˙");
+		cutItem=new JMenuItem("ºÙ«–");
+		copyItem=new JMenuItem("∏¥÷∆");
+		pasteItem=new JMenuItem("’≥Ã˘");
+		findItem=new JMenuItem("≤È’“");
+		replaceItem=new JMenuItem("ÃÊªª");
+		selectallItem=new JMenuItem("»´—°");
+		editMenu.add(undoItem);
+		editMenu.addSeparator();
+		editMenu.add(cutItem);
+		editMenu.add(copyItem);
+		editMenu.add(pasteItem);
+		editMenu.addSeparator();
+		editMenu.add(findItem);
+		editMenu.add(replaceItem);
+		editMenu.addSeparator();
+		editMenu.add(selectallItem);
 
+		mainMenuBar.add(insertMenu);
+		mainMenuBar.add(checkMenu);
+		mainMenuBar.add(toolMenu);
 
+		mainMenuBar.add(formatMenu);
+		wrapItem=new JCheckBoxMenuItem("ªª––");
+		fontItem=new JMenuItem("◊÷ÃÂ");
+		formatMenu.add(wrapItem);
+		formatMenu.add(fontItem);
+		
+		mainMenuBar.add(helpMenu);
+		helpItem=new JMenuItem("≤Èø¥∞Ô÷˙");
+		aboutItem=new JMenuItem("πÿ”⁄");
+		helpMenu.add(helpItem);
+		helpMenu.add(aboutItem);
 
-        mainMenuBar.add(editMenu);
-        undoItem=new JMenuItem("Êí§ÈîÄ");
-        cutItem=new JMenuItem("Ââ™Âàá");
-        copyItem=new JMenuItem("Â§çÂà∂");
-        pasteItem=new JMenuItem("Á≤òË¥¥");
-        findItem=new JMenuItem("Êü•Êâæ");
-        replaceItem=new JMenuItem("ÊõøÊç¢");
-        selectallItem=new JMenuItem("ÂÖ®ÈÄâ");
-        editMenu.add(undoItem);
-        editMenu.addSeparator();
-        editMenu.add(cutItem);
-        editMenu.add(copyItem);
-        editMenu.add(pasteItem);
-        editMenu.addSeparator();
-        editMenu.add(findItem);
-        editMenu.add(replaceItem);
-        editMenu.addSeparator();
-        editMenu.add(selectallItem);
-
-        mainMenuBar.add(insertMenu);
-        mainMenuBar.add(checkMenu);
-        mainMenuBar.add(toolMenu);
-
-        mainMenuBar.add(formatMenu);
-        wrapItem=new JCheckBoxMenuItem("Êç¢Ë°å");
-        fontItem=new JMenuItem("Â≠ó‰Ωì");
-        formatMenu.add(wrapItem);
-        formatMenu.add(fontItem);
-
-        mainMenuBar.add(helpMenu);
-        helpItem=new JMenuItem("Êü•ÁúãÂ∏ÆÂä©");
-        aboutItem=new JMenuItem("ÂÖ≥‰∫é");
-        helpMenu.add(helpItem);
-        helpMenu.add(aboutItem);
-
-    }
-
-    public static void main(String[] args)
-    {
-        new BootStrap();
-    }
+		
+	}
+	public static void main(String[] args)
+	{
+		new BootStrap();
+	}
 }
