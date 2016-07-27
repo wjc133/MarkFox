@@ -93,12 +93,13 @@ public class MainView {
         Panel1.add(JSPane2);
         Panel1.add(Panel,BorderLayout.NORTH);
         con.add(Panel1);
-        mainJFrame.setJMenuBar(mainMenuBar);
+
         //化菜单
         createMenu();
         //添加选项
         tool();
         mainJFrame.setVisible(true);
+        mainJFrame.setJMenuBar(mainMenuBar);
         //设置关闭按钮响应
         mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -129,7 +130,8 @@ public class MainView {
 
         BorderLayout bord = new BorderLayout();
         Panel.setLayout(bord);
-        Panel.add("North",bar);
+        //Panel.add("North",bar);
+        Panel.add(bar);
 
     }
     public void createMenu() {
@@ -141,7 +143,6 @@ public class MainView {
         checkMenu = new JMenu("查看");
         toolMenu = new JMenu("工具");
         helpMenu = new JMenu("帮助");
-
 
         mainMenuBar.add(fileMenu);
         newItem = new JMenuItem("新建");
