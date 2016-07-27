@@ -2,6 +2,8 @@ package com.elite.tools.markfox.client.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 /**
  * Created by wjc133
@@ -12,7 +14,7 @@ import java.awt.*;
 public class MainView {
     JFrame mainJFrame;
     Container con;
-    //JPanel Panel;
+    JPanel Panel,Panel1;
     JScrollPane JSPane1, JSPane2;
     JTextArea text1, text2;
     JMenuBar mainMenuBar;
@@ -28,47 +30,106 @@ public class MainView {
     JMenuItem helpItem, aboutItem;
 
     public MainView() {
-        mainJFrame = new JFrame("MarkFox");
-        con = mainJFrame.getContentPane();
-        con.setLayout(new BorderLayout());
+        initWindow();
 
-        text1 = new JTextArea(10, 48);
-        text1.setTabSize(4);
-        text1.setFont(new Font("宋体", Font.BOLD, 16));
-        text1.setLineWrap(true);
-        text1.setWrapStyleWord(true);
+        mainJFrame.addWindowStateListener(new WindowStateListener() {
+            public void windowStateChanged(WindowEvent state) {
 
-        text2 = new JTextArea(10, 49);
-        text2.setFont(new Font("宋体", Font.BOLD, 16));
-        text2.setLineWrap(true);
-        text2.setWrapStyleWord(true);
-        //Panel=new JPanel();
+                if(state.getNewState() == 1 || state.getNewState() == 7) {
+                    System.out.println("窗口最小化");
+                }else if (state.getNewState() == 6) {
+                    //重新设定控件尺寸
+                    System.out.println("窗口最大化");
+                    Dimension dim = mainJFrame.getSize();
+                    int w=(int)(dim.getWidth()/2);
+                    int h=(int)dim.getHeight();
+                    text1.setSize(w,h);
+                }else if(state.getNewState() == 0) {
+                    //重新设定控件尺寸
+                    Dimension dim = mainJFrame.getSize();
+                    int w=(int)(dim.getWidth()/2);
+                    int h=(int)dim.getHeight();
+                    text1.setSize(w,h);
+                    System.out.println("窗口恢复到初始状态");
+                }
+            }
 
-        JSPane1 = new JScrollPane(text1);
-        JSPane2 = new JScrollPane(text2);
-        //JSPane1.add(text1);
-        //JSPane2.add(text2);
-        //Panel.add(JSPane1,BorderLayout.WEST);
-        //Panel.add(JSPane2,BorderLayout.EAST);
-
-        text1.setBounds(12, 27, 425, 476);
-        text2.setBounds(443, 27, 423, 476);
-        con.add(JSPane1, BorderLayout.WEST);
-        con.add(JSPane2, BorderLayout.EAST);
-
-        createMenu();
-
-        mainJFrame.setJMenuBar(mainMenuBar);
-        //	mainJFrame.add(Panel,BorderLayout.CENTER);
-        mainJFrame.pack();
-        //con.add(Panle,BorderLayout.CENTER);
-        //con.add(JSPane2);
-
-        mainJFrame.setSize(894, 533);
-        mainJFrame.setVisible(true);
-        mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        });
     }
 
+
+    public void initWindow()
+    {
+        System.out.println("进入加载~~~~");
+        JPanel Panel1;
+        mainJFrame=new JFrame("MarkFox");
+        mainJFrame.pack();
+        mainJFrame.setSize(1000,500);
+        Dimension dim = mainJFrame.getSize();
+        Panel=new JPanel();
+
+        Panel1=new JPanel();
+        Panel1.setLayout(new BorderLayout());
+        Panel1.removeAll();
+        Panel1.repaint();
+        int w=(int)(dim.getWidth()/2);
+        int h=(int)dim.getHeight();
+        con=mainJFrame.getContentPane();
+
+        text1=new JTextArea();
+        text1.setFont(new Font("宋体",Font.BOLD,16));
+        text1.setLineWrap(true);
+        text1.setSize(w,h);
+
+        text2=new JTextArea();
+        text2.setFont(new Font("宋体",Font.BOLD,16) );
+        text2.setLineWrap(true);
+        text2.setSize(w,h);
+
+        JSPane1=new JScrollPane(text1);
+        JSPane2=new JScrollPane(text2);
+        Panel1.add(JSPane1,BorderLayout.WEST);
+        Panel1.add(JSPane2);
+        Panel1.add(Panel,BorderLayout.NORTH);
+        con.add(Panel1);
+        mainJFrame.setJMenuBar(mainMenuBar);
+        //化菜单
+        createMenu();
+        //添加选项
+        tool();
+        mainJFrame.setVisible(true);
+        //设置关闭按钮响应
+        mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    }
+    public void tool()
+    {
+        JButton button1 =new JButton("B ");
+        JButton button2 =new JButton("I ");
+        JButton button3 =new JButton("H1");
+        JButton button4 =new JButton("H2");
+        JButton iconButton1 =new JButton();
+        button1.setSize(15,15);
+        button2.setSize(15,15);
+        button3.setSize(15,15);
+        button4.setSize(15,15);
+        iconButton1.setSize(15,15);
+
+        iconButton1.setIcon(new ImageIcon(MainView.class.getResource("file.jpg")));
+
+        JToolBar bar = new JToolBar();
+
+        bar.add(button1);
+        bar.add(button2);
+        bar.add(button3);
+        bar.add(button4);
+        bar.add(iconButton1);
+
+        BorderLayout bord = new BorderLayout();
+        Panel.setLayout(bord);
+        Panel.add("North",bar);
+
+    }
     public void createMenu() {
         mainMenuBar = new JMenuBar();
         fileMenu = new JMenu("文件");
@@ -134,4 +195,5 @@ public class MainView {
         helpMenu.add(helpItem);
         helpMenu.add(aboutItem);
     }
+
 }
