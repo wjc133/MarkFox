@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.net.URL;
 
 /**
  * Created by wjc133
@@ -115,7 +116,8 @@ public class MainView {
         button4.setSize(15,15);
         iconButton1.setSize(15,15);
 
-        iconButton1.setIcon(new ImageIcon(MainView.class.getResource("file.jpg")));
+        URL image = MainView.class.getClassLoader().getResource("icon/file.jpg");
+        iconButton1.setIcon(new ImageIcon(image));
 
         JToolBar bar = new JToolBar();
 
