@@ -11,5 +11,17 @@
 
     <artifactId>markfox-client</artifactId>
 
+    <properties>
+        <beautyeye.version>3.7</beautyeye.version>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jb2011.lnf</groupId>
+            <artifactId>beautyeye</artifactId>
+            <version>${beautyeye.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/beautyeye.jar</systemPath>
+        </dependency>
+    </dependencies>
 </project>
