@@ -2,9 +2,16 @@ package com.elite.tools.markfox.client.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.net.URL;
+import java.util.Scanner;
 
 /**
  * Created by wjc133
@@ -29,6 +36,12 @@ public class MainView {
     JMenuItem fontItem;
 
     JMenuItem helpItem, aboutItem;
+
+    JButton button1 ;
+    JButton button2 ;
+    JButton button3 ;
+    JButton button4 ;
+    JButton iconButton1 ;
 
     public MainView() {
         initWindow();
@@ -56,6 +69,70 @@ public class MainView {
             }
 
         });
+        saveItem.addActionListener
+                 (
+                         new ActionListener() {
+                             public void actionPerformed(ActionEvent e) {
+                                 File file = null;   //接收文件
+                                 int result = 0;     //接收操作状态
+                                 JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
+                                 result = fileChooser.showSaveDialog(mainJFrame); // 显示保存框
+                                 if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                                     file = fileChooser.getSelectedFile(); // 得到选择的文件
+                                   //  this.label.setText("选择的存储文件名称为：" + file.getName());
+                                 } else if (result == JFileChooser.CANCEL_OPTION) {
+                                   //  this.label.setText("没有选择任何文件");
+                                 } else {
+                                   //  this.label.setText("操作出现错误");
+                                 }
+                                 if (file != null) {
+                                     try {
+                                         PrintStream out = new PrintStream(new FileOutputStream(file));
+                                         out.print(text1.getText());
+                                         out.close();
+                                     } catch (Exception e1) {
+                                     }
+                                 }
+
+                             }
+                         }
+
+                 );
+        openItem.addActionListener
+                (
+                        new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                File file = null;   //接收文件
+                                int result = 0;     //接收操作状态
+                                JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
+                                text1.setText(""); // 打开将文字区域的内容清空
+                                fileChooser.setApproveButtonText("确定");
+                                fileChooser.setDialogTitle("打开文件");
+                                result = fileChooser.showOpenDialog(mainJFrame);
+                                if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                                    file = fileChooser.getSelectedFile(); // 得到选择的文件
+                                   // this.label.setText("打开的文件名称为：" + file.getName());
+                                } else if (result == JFileChooser.CANCEL_OPTION) {
+                                   // this.label.setText("没有选择任何文件");
+                                } else {
+                                   // this.label.setText("操作出现错误");
+                                }
+                                if (file != null) {
+                                    try {
+                                        Scanner scan = new Scanner(new FileInputStream(file));
+                                        scan.useDelimiter("\n");
+                                        while (scan.hasNext()) {
+                                            text1.append(scan.next());
+                                            text1.append("\n");
+                                        }
+                                        scan.close();
+                                    } catch (Exception e1) {
+                                    }
+                                }
+                            }
+                        }
+                );
+
     }
 
 
@@ -155,6 +232,7 @@ public class MainView {
 
         fileMenu.add(newItem);
         fileMenu.add(openItem);
+        fileMenu.add(saveItem);
         fileMenu.add(saveasItem);
         fileMenu.addSeparator();
         fileMenu.add(pageItem);
