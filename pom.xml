@@ -12,6 +12,7 @@
         <module>markfox-parser</module>
         <module>markfox-client</module>
         <module>markfox-uploader</module>
+        <module>markfox-common</module>
     </modules>
 
     <properties>

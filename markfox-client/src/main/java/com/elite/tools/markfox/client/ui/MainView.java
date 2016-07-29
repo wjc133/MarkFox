@@ -1,5 +1,9 @@
 package com.elite.tools.markfox.client.ui;
 
+import com.elite.tools.markfox.common.FileStorager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -42,13 +46,15 @@ public class MainView {
     JButton iconButton1;
 
     File file = null;
+    FileStorager storager = new FileStorager();
+
+    private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     public MainView() {
         initWindow();
 
         mainJFrame.addWindowStateListener(new WindowStateListener() {
             public void windowStateChanged(WindowEvent state) {
-
                 if (state.getNewState() == 1 || state.getNewState() == 7) {
                     System.out.println("窗口最小化");
                 } else if (state.getNewState() == 6) {
@@ -67,47 +73,27 @@ public class MainView {
                     System.out.println("窗口恢复到初始状态");
                 }
             }
-
         });
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //File file = null;   //接收文件
-                String path =new String();
-                path=null;
-                int result = 0;     //接收操作状态
-                JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
+                String path = null;
+                JFileChooser fileChooser = new JFileChooser();
 
-               // file = fileChooser.getSelectedFile(); // 得到选择的文件
-                if(file!=null)
-                    path=file.getAbsolutePath();
-
-                System.out.println("文件路径："+path);
-                if (path==null) {
-                    result = fileChooser.showSaveDialog(mainJFrame); // ******在这里显示保存框*******
+                if (file != null) {
+                    path = file.getAbsolutePath();
+                }
+                if (path == null) {
+                    int result = fileChooser.showSaveDialog(mainJFrame);
                     if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
                         file = fileChooser.getSelectedFile(); // 得到选择的文件
-                        //  this.label.setText("选择的存储文件名称为：" + file.getName());
+                        LOG.debug("file choose：{}", file.getName());
                     } else if (result == JFileChooser.CANCEL_OPTION) {
-                        //  this.label.setText("没有选择任何文件");
-                    } else {
-                        //  this.label.setText("操作出现错误");
+                        LOG.debug("file chooser canceled");
                     }
-                    if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
-                        try {
-                            PrintStream out = new PrintStream(new FileOutputStream(file));
-                            out.print(text1.getText());
-                            out.close();
-                        } catch (Exception e1) {
-                        }
+                }
 
-                    }
-                }else if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
-                   try {
-                        PrintStream out = new PrintStream(new FileOutputStream(file));
-                        out.print(text1.getText());
-                        out.close();
-                   } catch (Exception e1) {
-                   }
+                if (file != null) {
+                    storager.setFile(file).save(text1.getText());
                 }
             }
         });
@@ -115,58 +101,38 @@ public class MainView {
 
         openItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               // File file = null;   //接收文件
-                int result = 0;     //接收操作状态
-                JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
-                text1.setText(""); // 打开将文字区域的内容清空
+                JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setApproveButtonText("确定");
                 fileChooser.setDialogTitle("打开文件");
-                result = fileChooser.showOpenDialog(mainJFrame);
+                int result = fileChooser.showOpenDialog(mainJFrame);
                 if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
                     file = fileChooser.getSelectedFile(); // 得到选择的文件
-                    // this.label.setText("打开的文件名称为：" + file.getName());
+                    LOG.debug("file choose：{}", file.getName());
                 } else if (result == JFileChooser.CANCEL_OPTION) {
-                    // this.label.setText("没有选择任何文件");
-                } else {
-                    // this.label.setText("操作出现错误");
+                    LOG.debug("file chooser canceled");
                 }
                 if (file != null) {
-                    try {
-                        Scanner scan = new Scanner(new FileInputStream(file));
-                        scan.useDelimiter("\n");
-                        while (scan.hasNext()) {
-                            text1.append(scan.next());
-                            text1.append("\n");
-                        }
-                        scan.close();
-                    } catch (Exception e1) {
-                    }
+                    text1.setText(""); // 清空
+                    storager.setFile(file);
+                    text1.setText(storager.open());
                 }
             }
         });
         saveasItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 File file = null;   //接收文件
-                int result = 0;     //接收操作状态
-                JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
+                JFileChooser fileChooser = new JFileChooser();
 
-                    result = fileChooser.showSaveDialog(mainJFrame); // ******在这里显示保存框*******
-                    if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
-                        file = fileChooser.getSelectedFile(); // 得到选择的文件
-                        //  this.label.setText("选择的存储文件名称为：" + file.getName());
-                    } else if (result == JFileChooser.CANCEL_OPTION) {
-                        //  this.label.setText("没有选择任何文件");
-                    } else {
-                        //  this.label.setText("操作出现错误");
-                    }
-                    if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
-                        try {
-                            PrintStream out = new PrintStream(new FileOutputStream(file));
-                            out.print(text1.getText());
-                            out.close();
-                        } catch (Exception e1) {
-                        }
-                    }
+                int result = fileChooser.showSaveDialog(mainJFrame);
+                if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                    file = fileChooser.getSelectedFile(); // 得到选择的文件
+                    LOG.debug("file choose：{}", file.getName());
+                } else if (result == JFileChooser.CANCEL_OPTION) {
+                    LOG.debug("file chooser canceled");
+                }
+                if (file != null) {
+                    storager.setFile(file).save(text1.getText());
+                }
             }
         });
 
@@ -174,7 +140,7 @@ public class MainView {
 
 
     public void initWindow() {
-        System.out.println("进入加载~~~~");
+        LOG.info("init window invoked...");
         JPanel Panel1;
         mainJFrame = new JFrame("MarkFox");
         mainJFrame.pack();
