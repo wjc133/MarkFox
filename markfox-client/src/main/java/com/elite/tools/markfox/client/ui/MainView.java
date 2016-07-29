@@ -41,6 +41,8 @@ public class MainView {
     JButton button4;
     JButton iconButton1;
 
+    File file = null;
+
     public MainView() {
         initWindow();
 
@@ -69,31 +71,51 @@ public class MainView {
         });
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                File file = null;   //接收文件
+                //File file = null;   //接收文件
+                String path =new String();
+                path=null;
                 int result = 0;     //接收操作状态
                 JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
-                result = fileChooser.showSaveDialog(mainJFrame); // 显示保存框
-                if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
-                    file = fileChooser.getSelectedFile(); // 得到选择的文件
-                    //  this.label.setText("选择的存储文件名称为：" + file.getName());
-                } else if (result == JFileChooser.CANCEL_OPTION) {
-                    //  this.label.setText("没有选择任何文件");
-                } else {
-                    //  this.label.setText("操作出现错误");
-                }
-                if (file != null) {
-                    try {
+
+               // file = fileChooser.getSelectedFile(); // 得到选择的文件
+                if(file!=null)
+                    path=file.getAbsolutePath();
+
+                System.out.println("文件路径："+path);
+                if (path==null) {
+                    result = fileChooser.showSaveDialog(mainJFrame); // ******在这里显示保存框*******
+                    if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                        file = fileChooser.getSelectedFile(); // 得到选择的文件
+                        //  this.label.setText("选择的存储文件名称为：" + file.getName());
+                    } else if (result == JFileChooser.CANCEL_OPTION) {
+                        //  this.label.setText("没有选择任何文件");
+                    } else {
+                        //  this.label.setText("操作出现错误");
+                    }
+                    if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
+                        try {
+                            PrintStream out = new PrintStream(new FileOutputStream(file));
+                            out.print(text1.getText());
+                            out.close();
+                        } catch (Exception e1) {
+                        }
+
+                    }
+                }else if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
+                   try {
                         PrintStream out = new PrintStream(new FileOutputStream(file));
                         out.print(text1.getText());
                         out.close();
-                    } catch (Exception e1) {
-                    }
+                   } catch (Exception e1) {
+                   }
                 }
             }
         });
+
+
         openItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                File file = null;   //接收文件
+               // File file = null;   //接收文件
                 int result = 0;     //接收操作状态
                 JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
                 text1.setText(""); // 打开将文字区域的内容清空
