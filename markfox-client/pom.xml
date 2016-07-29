@@ -23,5 +23,18 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/beautyeye.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-cross-platform</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-license</artifactId>
+            <version>${jxbrowser.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/license.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
