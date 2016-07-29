@@ -24,8 +24,7 @@ import java.util.Scanner;
 public class MainView {
     JFrame mainJFrame;
     Container con;
-    JPanel Panel, Panel1;
-    JScrollPane JSPane1, JSPane2;
+    JPanel Panel= new JPanel();
     JTextArea text1, text2;
     JMenuBar mainMenuBar;
     JMenu fileMenu, editMenu, formatMenu, helpMenu, insertMenu, checkMenu, toolMenu;
@@ -38,7 +37,7 @@ public class MainView {
     JMenuItem fontItem;
 
     JMenuItem helpItem, aboutItem;
-
+    JTabbedPane tjPanel = new JTabbedPane();
     JButton button1;
     JButton button2;
     JButton button3;
@@ -53,6 +52,9 @@ public class MainView {
     public MainView() {
         initWindow();
 
+        /**
+         * 动态调整窗口大小
+         */
         mainJFrame.addWindowStateListener(new WindowStateListener() {
             public void windowStateChanged(WindowEvent state) {
                 if (state.getNewState() == 1 || state.getNewState() == 7) {
@@ -74,6 +76,12 @@ public class MainView {
                 }
             }
         });
+
+
+
+        /**
+         * 实现保存功能
+         */
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String path = null;
@@ -97,7 +105,9 @@ public class MainView {
                 }
             }
         });
-
+        /**
+         * 实现打开功能
+         */
 
         openItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -118,6 +128,9 @@ public class MainView {
                 }
             }
         });
+        /**
+         * 实现另存为功能
+         */
         saveasItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 File file = null;   //接收文件
@@ -135,23 +148,58 @@ public class MainView {
                 }
             }
         });
+        newItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                JScrollPane JSPane1, JSPane2;
+                JTextArea text1, text2;
+
+                Dimension dim = mainJFrame.getSize();
+                con = mainJFrame.getContentPane();
+                int w = (int) (dim.getWidth() / 2);
+                int h = (int) dim.getHeight();
+                text1=new JTextArea();
+                text1.setFont(new Font("宋体", Font.BOLD, 16));
+                text1.setLineWrap(true);
+                text2=new JTextArea();
+                text1.setSize(w, h);
+                JPanel Panelbig,Panel2;
+                Panelbig = new JPanel();
+                Panel2 =new JPanel();
+                Panelbig.setLayout(new BorderLayout());
+                Panelbig.removeAll();
+                Panelbig.repaint();
+                Panel2.setLayout(new BorderLayout());
+
+                JSPane1 = new JScrollPane(text1);
+                JSPane2 = new JScrollPane(text2);//这个涉及全局变量。。。。可能有问题
+                Panel2.add(JSPane1,BorderLayout.WEST);
+                Panel2.add(JSPane2);
+                tjPanel.addTab("新文档",Panel2);
+                Panelbig.add(Panel, BorderLayout.NORTH);
+                Panelbig.add(tjPanel);
+                con.add(Panelbig);
+
+            }
+        });
 
     }
 
-
     public void initWindow() {
+        JScrollPane JSPane1, JSPane2;
         LOG.info("init window invoked...");
-        JPanel Panel1;
+        JPanel Panelbig,Paneltj,Panel2;
         mainJFrame = new JFrame("MarkFox");
         mainJFrame.pack();
         mainJFrame.setSize(1000, 500);
         Dimension dim = mainJFrame.getSize();
-        Panel = new JPanel();
 
-        Panel1 = new JPanel();
-        Panel1.setLayout(new BorderLayout());
-        Panel1.removeAll();
-        Panel1.repaint();
+        Panelbig = new JPanel();
+        Panel2 =new JPanel();
+        Panel2.setLayout(new BorderLayout());
+        Panelbig.setLayout(new BorderLayout());
+        Panelbig.removeAll();
+        Panelbig.repaint();
         int w = (int) (dim.getWidth() / 2);
         int h = (int) dim.getHeight();
         con = mainJFrame.getContentPane();
@@ -168,10 +216,16 @@ public class MainView {
 
         JSPane1 = new JScrollPane(text1);
         JSPane2 = new JScrollPane(text2);
-        Panel1.add(JSPane1, BorderLayout.WEST);
-        Panel1.add(JSPane2);
-        Panel1.add(Panel, BorderLayout.NORTH);
-        con.add(Panel1);
+        Panel2.add(JSPane1,BorderLayout.WEST);
+        Panel2.add(JSPane2);
+
+        tjPanel.addTab("新文档",Panel2);
+
+      //  Panelbig.add(JSPane1, BorderLayout.WEST);
+      //  Panelbig.add(JSPane2);
+        Panelbig.add(Panel, BorderLayout.NORTH);
+        Panelbig.add(tjPanel);
+        con.add(Panelbig);
 
         //化菜单
         createMenu();
