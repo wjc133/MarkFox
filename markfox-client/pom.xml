@@ -26,7 +26,7 @@
 
         <dependency>
             <groupId>com.teamdev.jxbrowser</groupId>
-            <artifactId>jxbrowser-cross-platform</artifactId>
+            <artifactId>jxbrowser-win</artifactId>
         </dependency>
 
         <dependency>

@@ -2,6 +2,7 @@ package com.teamdev.jxbrowser.chromium.demo;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.awt.*;
  * Time: 21:07
  */
 public class JxBrowserDemo {
-    public static void main(String[] args) {
+    public JxBrowserDemo() {
         Browser browser = new Browser();
         BrowserView view = new BrowserView(browser);
 
