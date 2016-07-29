@@ -144,6 +144,32 @@ public class MainView {
                 }
             }
         });
+        saveasItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File file = null;   //接收文件
+                int result = 0;     //接收操作状态
+                JFileChooser fileChooser = new JFileChooser(); // 文件选择框(java自己画好的？)
+
+                    result = fileChooser.showSaveDialog(mainJFrame); // ******在这里显示保存框*******
+                    if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                        file = fileChooser.getSelectedFile(); // 得到选择的文件
+                        //  this.label.setText("选择的存储文件名称为：" + file.getName());
+                    } else if (result == JFileChooser.CANCEL_OPTION) {
+                        //  this.label.setText("没有选择任何文件");
+                    } else {
+                        //  this.label.setText("操作出现错误");
+                    }
+                    if (file != null) {  //执行保存操作(若打开文件已经存在内容，这个可能存在问题)
+                        try {
+                            PrintStream out = new PrintStream(new FileOutputStream(file));
+                            out.print(text1.getText());
+                            out.close();
+                        } catch (Exception e1) {
+                        }
+                    }
+            }
+        });
+
     }
 
 
