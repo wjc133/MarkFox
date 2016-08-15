@@ -7,6 +7,10 @@ public class BootStrap {
     public static void main(String[] args) {
         Config.configAll();
 
+        loadView();
+    }
+
+    private static void loadView() {
         new MainView();
     }
 

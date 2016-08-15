@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
 /**
  * Created by wjc133
@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class MainView {
     JFrame mainJFrame;
     Container con;
-    JPanel Panel= new JPanel();
+    JPanel Panel = new JPanel();
     JTextArea text1, text2;
     JMenuBar mainMenuBar;
     JMenu fileMenu, editMenu, formatMenu, helpMenu, insertMenu, checkMenu, toolMenu;
@@ -51,33 +51,7 @@ public class MainView {
 
     public MainView() {
         initWindow();
-
-        /**
-         * 动态调整窗口大小
-         */
-        mainJFrame.addWindowStateListener(new WindowStateListener() {
-            public void windowStateChanged(WindowEvent state) {
-                if (state.getNewState() == 1 || state.getNewState() == 7) {
-                    System.out.println("窗口最小化");
-                } else if (state.getNewState() == 6) {
-                    //重新设定控件尺寸
-                    System.out.println("窗口最大化");
-                    Dimension dim = mainJFrame.getSize();
-                    int w = (int) (dim.getWidth() / 2);
-                    int h = (int) dim.getHeight();
-                    text1.setSize(w, h);
-                } else if (state.getNewState() == 0) {
-                    //重新设定控件尺寸
-                    Dimension dim = mainJFrame.getSize();
-                    int w = (int) (dim.getWidth() / 2);
-                    int h = (int) dim.getHeight();
-                    text1.setSize(w, h);
-                    System.out.println("窗口恢复到初始状态");
-                }
-            }
-        });
-
-
+        configWindow();
 
         /**
          * 实现保存功能
@@ -158,14 +132,14 @@ public class MainView {
                 con = mainJFrame.getContentPane();
                 int w = (int) (dim.getWidth() / 2);
                 int h = (int) dim.getHeight();
-                text1=new JTextArea();
+                text1 = new JTextArea();
                 text1.setFont(new Font("宋体", Font.BOLD, 16));
                 text1.setLineWrap(true);
-                text2=new JTextArea();
+                text2 = new JTextArea();
                 text1.setSize(w, h);
-                JPanel Panelbig,Panel2;
+                JPanel Panelbig, Panel2;
                 Panelbig = new JPanel();
-                Panel2 =new JPanel();
+                Panel2 = new JPanel();
                 Panelbig.setLayout(new BorderLayout());
                 Panelbig.removeAll();
                 Panelbig.repaint();
@@ -173,9 +147,9 @@ public class MainView {
 
                 JSPane1 = new JScrollPane(text1);
                 JSPane2 = new JScrollPane(text2);//这个涉及全局变量。。。。可能有问题
-                Panel2.add(JSPane1,BorderLayout.WEST);
+                Panel2.add(JSPane1, BorderLayout.WEST);
                 Panel2.add(JSPane2);
-                tjPanel.addTab("新文档",Panel2);
+                tjPanel.addTab("新文档", Panel2);
                 Panelbig.add(Panel, BorderLayout.NORTH);
                 Panelbig.add(tjPanel);
                 con.add(Panelbig);
@@ -185,17 +159,42 @@ public class MainView {
 
     }
 
+    private void configWindow() {
+        // 动态调整窗口大小
+        mainJFrame.addWindowStateListener(new WindowStateListener() {
+            public void windowStateChanged(WindowEvent state) {
+                if (state.getNewState() == 1 || state.getNewState() == 7) {
+                    System.out.println("窗口最小化");
+                } else if (state.getNewState() == 6) {
+                    //重新设定控件尺寸
+                    System.out.println("窗口最大化");
+                    Dimension dim = mainJFrame.getSize();
+                    int w = (int) (dim.getWidth() / 2);
+                    int h = (int) dim.getHeight();
+                    text1.setSize(w, h);
+                } else if (state.getNewState() == 0) {
+                    //重新设定控件尺寸
+                    Dimension dim = mainJFrame.getSize();
+                    int w = (int) (dim.getWidth() / 2);
+                    int h = (int) dim.getHeight();
+                    text1.setSize(w, h);
+                    System.out.println("窗口恢复到初始状态");
+                }
+            }
+        });
+    }
+
     public void initWindow() {
         JScrollPane JSPane1, JSPane2;
         LOG.info("init window invoked...");
-        JPanel Panelbig,Paneltj,Panel2;
+        JPanel Panelbig, Paneltj, Panel2;
         mainJFrame = new JFrame("MarkFox");
         mainJFrame.pack();
         mainJFrame.setSize(1000, 500);
         Dimension dim = mainJFrame.getSize();
 
         Panelbig = new JPanel();
-        Panel2 =new JPanel();
+        Panel2 = new JPanel();
         Panel2.setLayout(new BorderLayout());
         Panelbig.setLayout(new BorderLayout());
         Panelbig.removeAll();
@@ -216,18 +215,18 @@ public class MainView {
 
         JSPane1 = new JScrollPane(text1);
         JSPane2 = new JScrollPane(text2);
-        Panel2.add(JSPane1,BorderLayout.WEST);
+        Panel2.add(JSPane1, BorderLayout.WEST);
         Panel2.add(JSPane2);
 
-        tjPanel.addTab("新文档",Panel2);
+        tjPanel.addTab("新文档", Panel2);
 
-      //  Panelbig.add(JSPane1, BorderLayout.WEST);
-      //  Panelbig.add(JSPane2);
+        //  Panelbig.add(JSPane1, BorderLayout.WEST);
+        //  Panelbig.add(JSPane2);
         Panelbig.add(Panel, BorderLayout.NORTH);
         Panelbig.add(tjPanel);
         con.add(Panelbig);
 
-        //化菜单
+        //菜单
         createMenu();
         //添加选项
         tool();
@@ -239,7 +238,7 @@ public class MainView {
         mainJFrame.setJMenuBar(mainMenuBar);
         mainJFrame.setVisible(true);
         //设置关闭按钮响应
-        mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
 
