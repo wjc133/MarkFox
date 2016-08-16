@@ -11,7 +11,8 @@ public class BootStrap {
     }
 
     private static void loadView() {
-        new MainView();
+        MainView mainView = MainView.getInstance();
+        mainView.show();
     }
 
 }

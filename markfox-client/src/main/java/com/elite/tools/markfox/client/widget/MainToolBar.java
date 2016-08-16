@@ -34,18 +34,19 @@ public class MainToolBar extends JPanel {
         button4.setSize(15, 15);
 
         JToolBar toolBar = new JToolBar();
+        toolBar.add(button1);
+        toolBar.add(button2);
+        toolBar.add(button3);
+        toolBar.add(button4);
+
         URL image = MainView.class.getClassLoader().getResource("icon/file.jpg");
         if (image != null) {
             iconButton1.setIcon(new ImageIcon(image));
             iconButton1.setSize(15, 15);
             toolBar.add(iconButton1);
         }
-        toolBar.add(button1);
-        toolBar.add(button2);
-        toolBar.add(button3);
-        toolBar.add(button4);
 
-        setLayout(new FlowLayout());
+        setLayout(new BorderLayout());
         add(toolBar);
     }
 }

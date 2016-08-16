@@ -65,7 +65,11 @@ public class TabPanel extends JPanel {
         editArea.setText("");
     }
 
-    public void getText(){
-        editArea.getText();
+    public String getText() {
+        return editArea.getText();
+    }
+
+    public void setText(String text) {
+        editArea.setText(text);
     }
 }
