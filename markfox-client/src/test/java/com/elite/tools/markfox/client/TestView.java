@@ -14,13 +14,11 @@ public class TestView {
 
     public TestView(){
         frame = new JFrame("MarkFox");
-        frame.pack();
         frame.setSize(1000, 500);
 
-        Dimension dim = frame.getSize();
-
-        tabPanel = TabPanel.createTabPanel(dim);
+        tabPanel = TabPanel.createTabPanel();
         Container container = frame.getContentPane();
+        container.setLayout(new BorderLayout());
         container.add(tabPanel);
 
         frame.setVisible(true);

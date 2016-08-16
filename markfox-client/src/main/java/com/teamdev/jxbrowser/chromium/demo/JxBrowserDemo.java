@@ -13,17 +13,14 @@ import java.awt.*;
  * Time: 21:07
  */
 public class JxBrowserDemo {
+    private BrowserView browserView;
+
     public JxBrowserDemo() {
         Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
+        browserView = new BrowserView(browser);
+    }
 
-        JFrame frame = new JFrame("JxBrowser - Hello World");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(view, BorderLayout.CENTER);
-        frame.setSize(500, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-        browser.loadHTML("<html><body><h1>Hello World!</h1></body></html>");
+    public BrowserView getBrowserView() {
+        return browserView;
     }
 }

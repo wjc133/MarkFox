@@ -1,6 +1,15 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.parser.MarkdownProcessor;
+import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
+import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 /**
@@ -10,55 +19,57 @@ import java.awt.*;
  * 多标签页的基础内容
  */
 public class TabPanel extends JPanel {
-    private int width;
-    private int height;
-    private JTextArea editArea, previewArea;
+    private static final Logger LOG = LoggerFactory.getLogger(TabPanel.class);
+
+    private JTextArea editArea;
+    private BrowserView previewArea;
+
+    MarkdownProcessor processor = new MarkdownProcessor();
 
     private TabPanel() {
     }
 
-    public void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
-
     private void init() {
         editArea = new JTextArea();
-        previewArea = new JTextArea();
+        previewArea = new JxBrowserDemo().getBrowserView();
 
-        editArea = new JTextArea();
         editArea.setFont(new Font("宋体", Font.BOLD, 16));
         editArea.setLineWrap(true);
-        editArea.setSize(width / 2, height);
 
-        previewArea = new JTextArea();
-        previewArea.setFont(new Font("宋体", Font.BOLD, 16));
-        previewArea.setLineWrap(true);
-        previewArea.setSize(width / 2, height);
-
-        //布局管理
-        GridBagLayout gridBagLayout = new GridBagLayout();
-        setLayout(gridBagLayout);
-        GridBagConstraints editConstraints = new GridBagConstraints(0, 0, 1, 1, 1, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0);
-        add(new JScrollPane(editArea), editConstraints);
-
-        GridBagConstraints previewConstraints = new GridBagConstraints(1, 0, 1, 1, 1, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0);
-        add(new JScrollPane(previewArea), previewConstraints);
+        //Layout Manager
+        setLayout(new GridLayout(1, 2));
+        add(new JScrollPane(editArea));
+        add(previewArea);
     }
 
-    public static TabPanel createTabPanel(int width, int height) {
+    public static TabPanel createTabPanel() {
         TabPanel panel = new TabPanel();
-        panel.setSize(width, height);
         panel.init();
+        panel.configPreview();
         return panel;
     }
 
-    public static TabPanel createTabPanel(Dimension dimension) {
-        return createTabPanel(dimension.width, dimension.height);
+    private void configPreview() {
+        editArea.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                LOG.debug("editArea document inserted!");
+                preview();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                LOG.debug("editArea document removed!");
+                preview();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                LOG.debug("editArea document changed!");
+            }
+        });
+    }
+
+    private void preview() {
+        String markdown = processor.markdown(editArea.getText());
+        previewArea.getBrowser().loadHTML(markdown);
     }
 
     public void clear() {

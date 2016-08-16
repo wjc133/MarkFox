@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema
+        xmlns="http://wjc133.github.com"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://wjc133.github.com">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+
+    <xs:annotation>
+        <xs:documentation><![CDATA[
+	FastUI Schema, version 0.0.1
+	Authors: wjc133
+
+	This defines a simple and consistent way of creating a namespace
+	of Java Swing objects.
+		]]></xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="view">
+        <xs:complexType>
+            <xs:attribute name="layout" default="border" type="defaultable-layout">
+                <xs:annotation>
+                    <xs:documentation><![CDATA[
+	The default 'layout' value; see the documentation for the
+	'layout' attribute of the 'view' element.
+					]]></xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="defaultable-layout">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="border"/>
+            <xs:enumeration value="flow"/>
+            <xs:enumeration value="card"/>
+            <xs:enumeration value="gird"/>
+            <xs:enumeration value="girdBag"/>
+            <xs:enumeration value="box"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

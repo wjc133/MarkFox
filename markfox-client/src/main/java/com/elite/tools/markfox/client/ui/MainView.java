@@ -183,7 +183,7 @@ public class MainView extends AbstractView {
     }
 
     public TabPanel addNewTab() {
-        TabPanel tabPanel = TabPanel.createTabPanel(frame.getSize());
+        TabPanel tabPanel = TabPanel.createTabPanel();
         tabbedPane.addTab("新文档", tabPanel);
         return tabPanel;
     }
