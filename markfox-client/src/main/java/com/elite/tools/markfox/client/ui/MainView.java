@@ -3,6 +3,7 @@ package com.elite.tools.markfox.client.ui;
 import com.elite.tools.markfox.client.widget.MainMenu;
 import com.elite.tools.markfox.client.widget.MainToolBar;
 import com.elite.tools.markfox.client.widget.TabPanel;
+import com.elite.tools.markfox.client.widget.TabbedPopupMenu;
 import com.elite.tools.markfox.common.FileStorager;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -11,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +29,9 @@ public class MainView extends AbstractView {
     private MainMenu menuBar;
     private MainToolBar toolBar;
     private JTabbedPane tabbedPane;
+    private TabbedPopupMenu tabbedPopupMenu;
+
+    private int lastIndex;
 
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
@@ -121,6 +124,61 @@ public class MainView extends AbstractView {
                 addNewTab();
             }
         });
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    lastIndex = ((JTabbedPane) e.getComponent()).getUI().tabForCoordinate(tabbedPane, e.getX(), e.getY());
+                    tabbedPopupMenu.show(tabbedPane, e.getX(), e.getY());
+                } else if (e.getButton() == MouseEvent.BUTTON2) {
+                    final int index = ((JTabbedPane) e.getComponent()).getUI().tabForCoordinate(tabbedPane, e.getX(), e.getY());
+                    closeTab(index);
+                }
+            }
+        });
+
+        tabbedPopupMenu.getCloseItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeTab(lastIndex);
+            }
+        });
+
+        tabbedPopupMenu.getCloseOthersItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeOtherTabs(lastIndex);
+            }
+        });
+
+        tabbedPopupMenu.getCloseAllItem().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeAllTabs();
+            }
+        });
+    }
+
+    private void closeOtherTabs(int index) {
+        if (index >= 0) {
+            int k=0;
+            int count = tabbedPane.getTabCount();
+            for (int i = 0; i < count; i++) {
+                if (i != index) {
+                    tabbedPane.removeTabAt(k);
+                }else {
+                    k++;
+                }
+            }
+        }
+    }
+
+    private void closeAllTabs() {
+        tabbedPane.removeAll();
+    }
+
+    private void closeTab(int index) {
+        tabbedPane.removeTabAt(index);
     }
 
     public static MainView getInstance() {
@@ -173,6 +231,7 @@ public class MainView extends AbstractView {
         frame = new JFrame("MarkFox");
         menuBar = MainMenu.getInstance();
         toolBar = MainToolBar.getInstance();
+        tabbedPopupMenu = TabbedPopupMenu.getInstance();
 
         tabbedPane = new JTabbedPane();
         addNewTab();
