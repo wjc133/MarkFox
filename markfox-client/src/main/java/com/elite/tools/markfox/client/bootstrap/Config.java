@@ -76,8 +76,13 @@ public class Config {
 
     public static void beautyEye() {
         try {
+            System.setProperty("sun.java2d.noddraw", "true");
             BeautyEyeLNFHelper.launchBeautyEyeLNF();
+            //取消设置按钮
             UIManager.put("RootPane.setupButtonVisible", false);
+            //取消多标签padding
+            UIManager.put("TabbedPane.tabAreaInsets"
+                    , new javax.swing.plaf.InsetsUIResource(3,3,2,3));
         } catch (Exception e) {
             e.printStackTrace();
         }
