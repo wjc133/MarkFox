@@ -33,7 +33,7 @@ software, even if advised of the possibility of such damage.
 
 */
 
-package com.elite.tools.markfox.parser;
+package com.elite.tools.markfox.parser.markdownj;
 
 import java.util.Collection;
 import java.util.Collections;

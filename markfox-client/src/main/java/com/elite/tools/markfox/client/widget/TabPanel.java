@@ -1,11 +1,13 @@
 package com.elite.tools.markfox.client.widget;
 
-import com.elite.tools.markfox.parser.MarkdownProcessor;
+import com.elite.tools.markfox.parser.MarkdownJParser;
+import com.elite.tools.markfox.parser.MarkdownParser;
+import com.elite.tools.markfox.parser.MarkdownParsers;
+import com.elite.tools.markfox.parser.markdownj.MarkdownProcessor;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.Log;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -24,7 +26,7 @@ public class TabPanel extends JPanel {
     private JTextArea editArea;
     private BrowserView previewArea;
 
-    MarkdownProcessor processor = new MarkdownProcessor();
+    MarkdownParser parser = MarkdownParsers.createPegdownParser();
 
     private TabPanel() {
     }
@@ -68,7 +70,7 @@ public class TabPanel extends JPanel {
     }
 
     private void preview() {
-        String markdown = processor.markdown(editArea.getText());
+        String markdown = parser.parse(editArea.getText());
         previewArea.getBrowser().loadHTML(markdown);
     }
 

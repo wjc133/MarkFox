@@ -33,27 +33,10 @@ software, even if advised of the possibility of such damage.
 
 */
 
-package com.elite.tools.markfox.parser;
+package com.elite.tools.markfox.parser.markdownj;
 
-public class LinkDefinition {
-    private String url;
-    private String title;
+import java.util.regex.Matcher;
 
-    public LinkDefinition(String url, String title) {
-        this.url = url;
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public String toString() {
-        return url + " (" + title + ")";
-    }
+public interface Replacement {
+    String replacement(Matcher m);
 }

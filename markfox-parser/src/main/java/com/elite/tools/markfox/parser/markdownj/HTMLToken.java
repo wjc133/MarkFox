@@ -1,4 +1,4 @@
-package com.elite.tools.markfox.parser;
+package com.elite.tools.markfox.parser.markdownj;
 
 public class HTMLToken {
     private boolean isTag;
