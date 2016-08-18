@@ -30,9 +30,9 @@ public class MainMenu extends JMenuBar {
         createFileMenu(fileMenu);
         createEditMenu(editMenu);
         createFormatMenu(formatMenu);
-        createInsertMenu(insertMenu);
-        createViewMenu(viewMenu);
-        createToolMenu(toolMenu);
+//        createInsertMenu(insertMenu);
+//        createViewMenu(viewMenu);
+//        createToolMenu(toolMenu);
         createHelpMenu(helpMenu);
     }
 
