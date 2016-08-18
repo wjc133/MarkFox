@@ -1,9 +1,7 @@
 package com.elite.tools.markfox.client.widget;
 
-import com.elite.tools.markfox.parser.MarkdownJParser;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
-import com.elite.tools.markfox.parser.markdownj.MarkdownProcessor;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import org.slf4j.Logger;
@@ -71,7 +69,19 @@ public class TabPanel extends JPanel {
 
     private void preview() {
         String markdown = parser.parse(editArea.getText());
-        previewArea.getBrowser().loadHTML(markdown);
+        StringBuilder html = new StringBuilder();
+        html.append("<html><head>");
+//        html.append("E:/Work/MarkFox/markfox-client/src/main/resources/style/default.css");
+        html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");
+        html.append("<link rel=\"stylesheet\" href=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.css\"></head>");
+        html.append("<body>");
+        html.append(markdown);
+        //add js
+        html.append("<script src=\"http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js\"></script>");
+        html.append("<script src=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.js\"></script>");
+        html.append("<script>$(window).load(function(){$(\"pre\").addClass(\"prettyprint\");prettyPrint();})</script>");
+        html.append("</body></html>");
+        previewArea.getBrowser().loadHTML(html.toString());
     }
 
     public void clear() {

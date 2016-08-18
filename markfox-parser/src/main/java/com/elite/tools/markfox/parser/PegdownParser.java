@@ -9,7 +9,7 @@ import org.pegdown.PegDownProcessor;
  * Time: 20:42
  */
 public class PegdownParser implements MarkdownParser {
-    private PegDownProcessor processor = new PegDownProcessor(Extensions.ALL,5000);
+    private PegDownProcessor processor = new PegDownProcessor(Extensions.TABLES, 5000);
 
     PegdownParser() {
 
