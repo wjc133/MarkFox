@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by wjc133
@@ -21,7 +23,7 @@ import java.awt.*;
 public class TabPanel extends JPanel {
     private static final Logger LOG = LoggerFactory.getLogger(TabPanel.class);
 
-    private JTextArea editArea;
+    private EditArea editArea;
     private BrowserView previewArea;
 
     MarkdownParser parser = MarkdownParsers.createPegdownParser();
@@ -30,7 +32,7 @@ public class TabPanel extends JPanel {
     }
 
     private void init() {
-        editArea = new JTextArea();
+        editArea = new EditArea();
         previewArea = new JxBrowserDemo().getBrowserView();
 
         editArea.setFont(new Font("宋体", Font.BOLD, 16));
@@ -45,8 +47,20 @@ public class TabPanel extends JPanel {
     public static TabPanel createTabPanel() {
         TabPanel panel = new TabPanel();
         panel.init();
+//        panel.configEditor();
         panel.configPreview();
         return panel;
+    }
+
+    private void configEditor() {
+        editArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
+                    System.out.println("Hello World");
+                }
+            }
+        });
     }
 
     private void configPreview() {

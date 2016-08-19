@@ -100,6 +100,25 @@
                 <artifactId>fastxml</artifactId>
                 <version>1.0.0</version>
             </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.bouncycastle</groupId>-->
+                <!--<artifactId>bcprov-jdk16</artifactId>-->
+                <!--<version>1.46</version>-->
+            <!--</dependency>-->
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-api</artifactId>
+                <version>2.7.13</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.wjc133</groupId>
+                <artifactId>soar-core</artifactId>
+                <version>0.0.1</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

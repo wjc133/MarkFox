@@ -1,5 +1,7 @@
 package com.elite.tools.markfox.client.bootstrap;
 
+import com.elite.tools.markfox.common.AppBase;
+import com.elite.tools.soar.toolbox.Soar;
 import org.apache.commons.lang3.StringUtils;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.slf4j.Logger;
@@ -17,8 +19,8 @@ import java.io.InputStream;
  * Date: 2016/7/29
  * Time: 11:30
  */
-public class Config {
-    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
+public class Application {
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
     public static void configLogging() {
         String path = copyLoggingFile();
@@ -72,6 +74,12 @@ public class Config {
         julToSlf4j();
 
         beautyEye();
+
+        soar();
+    }
+
+    private static void soar() {
+        AppBase.setQueue(Soar.newRequestQueue());
     }
 
     public static void beautyEye() {
@@ -82,7 +90,7 @@ public class Config {
             UIManager.put("RootPane.setupButtonVisible", false);
             //取消多标签padding
             UIManager.put("TabbedPane.tabAreaInsets"
-                    , new javax.swing.plaf.InsetsUIResource(3,3,2,3));
+                    , new javax.swing.plaf.InsetsUIResource(3, 3, 2, 3));
         } catch (Exception e) {
             e.printStackTrace();
         }

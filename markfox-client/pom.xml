@@ -41,6 +41,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.elite.tools</groupId>
+            <artifactId>markfox-uploader</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jb2011.lnf</groupId>
             <artifactId>beautyeye</artifactId>
             <version>${beautyeye.version}</version>
