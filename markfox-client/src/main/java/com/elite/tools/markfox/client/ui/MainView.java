@@ -32,7 +32,7 @@ public class MainView extends AbstractView {
     private TabbedPopupMenu tabbedPopupMenu;
 
     private int lastIndex;
-
+    private int i=2;
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     private Map<TabPanel, String> pathMap = Maps.newHashMap();
@@ -56,8 +56,8 @@ public class MainView extends AbstractView {
                 File file = null;
                 JFileChooser fileChooser = new JFileChooser();
 
-                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
-                String path = pathMap.get(currentTab);
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();//当前标签
+                String path = pathMap.get(currentTab);//当前标签页路径
                 if (path == null) {
                     int result = fileChooser.showSaveDialog(frame);
                     if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
@@ -93,7 +93,7 @@ public class MainView extends AbstractView {
                 }
                 if (file != null) {
                     TabPanel newTab = addNewTab();
-                    pathMap.put(newTab, file.getAbsolutePath());
+                    pathMap.put(newTab, file.getAbsolutePath());//打开的时候
                     storager.setFile(file);
                     newTab.setText(storager.open());
                 }
@@ -121,7 +121,7 @@ public class MainView extends AbstractView {
         });
         newItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addNewTab();
+                addNewTab1();
             }
         });
         tabbedPane.addMouseListener(new MouseAdapter() {
@@ -244,6 +244,15 @@ public class MainView extends AbstractView {
     public TabPanel addNewTab() {
         TabPanel tabPanel = TabPanel.createTabPanel();
         tabbedPane.addTab("新文档", tabPanel);
+        //tabbedPane.setSelectedIndex(i-1);
+        //i++;
+        return tabPanel;
+    }
+    public TabPanel addNewTab1() {
+        TabPanel tabPanel = TabPanel.createTabPanel();
+        tabbedPane.addTab("新文档"+"("+i+")", tabPanel);
+        tabbedPane.setSelectedIndex(i-1);
+        i++;
         return tabPanel;
     }
 
