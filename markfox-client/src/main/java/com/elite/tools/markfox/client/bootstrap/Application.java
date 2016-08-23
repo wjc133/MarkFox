@@ -1,6 +1,9 @@
 package com.elite.tools.markfox.client.bootstrap;
 
 import com.elite.tools.markfox.common.AppBase;
+import com.elite.tools.markfox.common.settings.Settings;
+import com.elite.tools.markfox.common.utils.ResourceUtils;
+import com.elite.tools.soar.toolbox.JsonUtils;
 import com.elite.tools.soar.toolbox.Soar;
 import org.apache.commons.lang3.StringUtils;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
@@ -73,16 +76,34 @@ public class Application {
         configLogging();
         julToSlf4j();
 
+        loadingConfig();
+
         beautyEye();
 
         soar();
+    }
+
+    /**
+     * 读取配置信息,初始化时将配置载入内存
+     */
+    private static void loadingConfig() {
+        String json = ResourceUtils.getContent("conf/common.json");
+        AppBase.setConf(JsonUtils.fromJson(json, Settings.class));
+    }
+
+    /**
+     * 将内存中的配置回写到磁盘文件中
+     */
+    public static void saveConfig() {
+        String json = JsonUtils.toJson(AppBase.getConf());
+        ResourceUtils.saveContent("conf/common.json", json);
     }
 
     private static void soar() {
         AppBase.setQueue(Soar.newRequestQueue());
     }
 
-    public static void beautyEye() {
+    private static void beautyEye() {
         try {
             System.setProperty("sun.java2d.noddraw", "true");
             BeautyEyeLNFHelper.launchBeautyEyeLNF();

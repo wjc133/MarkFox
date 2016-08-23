@@ -40,7 +40,7 @@ public class CheveratoUploader implements PicUploader {
         this.website = website;
     }
 
-    public String upload(Image image) {
+    public String upload(Image image, int timeout, TimeUnit unit) {
         try {
             if (image instanceof BufferedImage) {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -60,12 +60,22 @@ public class CheveratoUploader implements PicUploader {
                     }
                 };
                 AppBase.getQueue().add(request);
-                return future.get(5, TimeUnit.SECONDS);
+                return future.get(timeout, unit);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Override
+    public String upload(Image obj) {
+        return this.upload(obj, 5, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public List<String> batchUpload(List<Image> objList, int timeout, TimeUnit unit) {
+        return null;
     }
 
     public List<String> batchUpload(List<Image> objList) {

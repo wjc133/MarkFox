@@ -1,5 +1,6 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.common.AppBase;
 import com.elite.tools.markfox.common.settings.PicSettings;
 import com.elite.tools.markfox.uploader.WebSite;
 import com.elite.tools.markfox.uploader.WebSites;
@@ -49,7 +50,7 @@ public class PicSettingPanle extends SettingPanle {
 
     @Override
     public void apply() {
-//        PicSettings.website = (String) websiteBox.getSelectedItem();
-//        PicSettings.timeout = NumberUtils.toInt(timeoutEdit.getText().trim(), 5);
+        AppBase.getConf().getPic().setWebsite((String) websiteBox.getSelectedItem());
+        AppBase.getConf().getPic().setTimeout(NumberUtils.toInt(timeoutEdit.getText().trim(), 5));
     }
 }

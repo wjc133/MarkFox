@@ -1,5 +1,6 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.client.bootstrap.Application;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -34,5 +35,6 @@ public class CommonSetting extends JPanel {
                 panle.apply();
             }
         }
+        Application.saveConfig();
     }
 }

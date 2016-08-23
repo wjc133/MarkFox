@@ -61,6 +61,11 @@
 
         <dependency>
             <groupId>com.teamdev.jxbrowser</groupId>
+            <artifactId>jxbrowser-win</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.teamdev.jxbrowser</groupId>
             <artifactId>jxbrowser-license</artifactId>
             <version>${jxbrowser.version}</version>
             <scope>system</scope>

@@ -1,5 +1,6 @@
 package com.elite.tools.markfox.common;
 
+import com.elite.tools.markfox.common.settings.Settings;
 import com.elite.tools.soar.RequestQueue;
 
 /**
@@ -9,6 +10,7 @@ import com.elite.tools.soar.RequestQueue;
  */
 public class AppBase {
     private static RequestQueue mQueue;
+    private static Settings conf;
 
     public static RequestQueue getQueue() {
         return mQueue;
@@ -16,5 +18,13 @@ public class AppBase {
 
     public static void setQueue(RequestQueue queue) {
         mQueue = queue;
+    }
+
+    public static Settings getConf() {
+        return conf;
+    }
+
+    public static void setConf(Settings conf) {
+        AppBase.conf = conf;
     }
 }
