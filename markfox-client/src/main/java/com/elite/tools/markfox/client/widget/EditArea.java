@@ -1,6 +1,9 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.common.settings.PicSettings;
 import com.elite.tools.markfox.uploader.CheveratoUploader;
+import com.elite.tools.markfox.uploader.PicUploader;
+import com.elite.tools.markfox.uploader.Uploaders;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +17,8 @@ import java.awt.datatransfer.Transferable;
  * Time: 13:17
  */
 public class EditArea extends JTextArea {
+    private CheveratoUploader uploader = new CheveratoUploader();
+
     @Override
     public void paste() {
         if (isEditable() && isEnabled()) {
@@ -22,8 +27,8 @@ public class EditArea extends JTextArea {
             try {
                 if (cc != null && cc.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     Image img = (Image) cc.getTransferData(DataFlavor.imageFlavor);
-                    // TODO: 2016/8/19 通过设置指定所需的图床
-                    String url = new CheveratoUploader("imgchr.com").upload(img);
+                    uploader.setWebsite("");
+                    String url = uploader.upload(img);
                     String md = "![](" + url + ")";
                     int pos = getCaretPosition();
                     insert(md, pos);

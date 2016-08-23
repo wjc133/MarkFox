@@ -52,17 +52,6 @@ public class TabPanel extends JPanel {
         return panel;
     }
 
-    private void configEditor() {
-        editArea.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_V) {
-                    System.out.println("Hello World");
-                }
-            }
-        });
-    }
-
     private void configPreview() {
         editArea.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {

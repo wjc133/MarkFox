@@ -56,7 +56,7 @@
 
         <dependency>
             <groupId>com.teamdev.jxbrowser</groupId>
-            <artifactId>jxbrowser-win</artifactId>
+            <artifactId>jxbrowser-mac</artifactId>
         </dependency>
 
         <dependency>
@@ -65,6 +65,11 @@
             <version>${jxbrowser.version}</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/license.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
         </dependency>
     </dependencies>
 </project>

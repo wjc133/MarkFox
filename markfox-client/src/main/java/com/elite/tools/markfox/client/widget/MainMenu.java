@@ -32,7 +32,7 @@ public class MainMenu extends JMenuBar {
         createFormatMenu(formatMenu);
 //        createInsertMenu(insertMenu);
 //        createViewMenu(viewMenu);
-//        createToolMenu(toolMenu);
+        createToolMenu(toolMenu);
         createHelpMenu(helpMenu);
     }
 
@@ -88,6 +88,8 @@ public class MainMenu extends JMenuBar {
 
     private void createToolMenu(JMenu toolMenu) {
         add(toolMenu);
+        JMenuItem optionItem = new JMenuItem("设置");
+        toolMenu.add(optionItem);
     }
 
     private void createFormatMenu(JMenu formatMenu) {

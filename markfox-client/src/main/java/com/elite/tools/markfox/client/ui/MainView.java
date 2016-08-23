@@ -1,9 +1,6 @@
 package com.elite.tools.markfox.client.ui;
 
-import com.elite.tools.markfox.client.widget.MainMenu;
-import com.elite.tools.markfox.client.widget.MainToolBar;
-import com.elite.tools.markfox.client.widget.TabPanel;
-import com.elite.tools.markfox.client.widget.TabbedPopupMenu;
+import com.elite.tools.markfox.client.widget.*;
 import com.elite.tools.markfox.common.FileStorager;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
@@ -32,7 +29,7 @@ public class MainView extends AbstractView {
     private TabbedPopupMenu tabbedPopupMenu;
 
     private int lastIndex;
-    private int i=2;
+    private int i = 1;
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     private Map<TabPanel, String> pathMap = Maps.newHashMap();
@@ -121,7 +118,7 @@ public class MainView extends AbstractView {
         });
         newItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addNewTab1();
+                addNewTab();
             }
         });
         tabbedPane.addMouseListener(new MouseAdapter() {
@@ -157,16 +154,42 @@ public class MainView extends AbstractView {
                 closeAllTabs();
             }
         });
+
+        JMenuItem optionItem = menuBar.getMenu(3).getItem(0);
+        optionItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingView settingView = SettingView.getInstance(MainView.this.frame);
+                settingView.show();
+            }
+        });
+
+        JMenuItem helpItem = menuBar.getMenu(4).getItem(0);
+        JMenuItem aboutItem = menuBar.getMenu(4).getItem(1);
+        helpItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Geek还需要什么帮助吗?",
+                        "帮助", JOptionPane.NO_OPTION);
+            }
+        });
+        aboutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "MarkFox 0.0.1预览版,致力于成为最好用的Markdown编辑器",
+                        "关于", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
     }
 
     private void closeOtherTabs(int index) {
         if (index >= 0) {
-            int k=0;
+            int k = 0;
             int count = tabbedPane.getTabCount();
             for (int i = 0; i < count; i++) {
                 if (i != index) {
                     tabbedPane.removeTabAt(k);
-                }else {
+                } else {
                     k++;
                 }
             }
@@ -241,17 +264,22 @@ public class MainView extends AbstractView {
         tabbedPane.add(tab);
     }
 
-    public TabPanel addNewTab() {
+    private TabPanel addNewTab() {
         TabPanel tabPanel = TabPanel.createTabPanel();
-        tabbedPane.addTab("新文档", tabPanel);
-        //tabbedPane.setSelectedIndex(i-1);
-        //i++;
+        if (i == 1) {
+            tabbedPane.addTab("新文档", tabPanel);
+        } else {
+            tabbedPane.addTab("新文档" + "(" + i + ")", tabPanel);
+        }
+        tabbedPane.setSelectedIndex(i - 1);
+        i++;
         return tabPanel;
     }
-    public TabPanel addNewTab1() {
+
+    private TabPanel addNewTab(String name) {
         TabPanel tabPanel = TabPanel.createTabPanel();
-        tabbedPane.addTab("新文档"+"("+i+")", tabPanel);
-        tabbedPane.setSelectedIndex(i-1);
+        tabbedPane.addTab(name, tabPanel);
+        tabbedPane.setSelectedIndex(i - 1);
         i++;
         return tabPanel;
     }

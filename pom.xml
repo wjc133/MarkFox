@@ -28,6 +28,7 @@
         <jxbrowser.version>5.4.3</jxbrowser.version>
         <!--<jxbrowser.version>6.6.1</jxbrowser.version>-->
         <fastxml.version>1.0.0</fastxml.version>
+        <snake.yaml.version>1.17</snake.yaml.version>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +97,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.teamdev.jxbrowser</groupId>
+                <artifactId>jxbrowser-mac</artifactId>
+                <version>${jxbrowser.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.github.fastxml</groupId>
                 <artifactId>fastxml</artifactId>
                 <version>1.0.0</version>
@@ -117,6 +124,18 @@
                 <groupId>com.github.wjc133</groupId>
                 <artifactId>soar-core</artifactId>
                 <version>0.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snake.yaml.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.esotericsoftware.yamlbeans</groupId>
+                <artifactId>yamlbeans</artifactId>
+                <version>1.09</version>
             </dependency>
 
         </dependencies>

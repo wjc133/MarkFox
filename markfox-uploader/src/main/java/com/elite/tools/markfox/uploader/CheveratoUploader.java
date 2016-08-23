@@ -1,6 +1,7 @@
 package com.elite.tools.markfox.uploader;
 
 import com.elite.tools.markfox.common.AppBase;
+import com.elite.tools.markfox.common.settings.PicSettings;
 import com.elite.tools.soar.AuthFailureError;
 import com.elite.tools.soar.Request;
 import com.elite.tools.soar.toolbox.RequestFuture;
@@ -22,12 +23,21 @@ import java.util.concurrent.TimeUnit;
  * Time: 14:39
  */
 public class CheveratoUploader implements PicUploader {
-    private final String url;
+    private String url;
     private String website;
+
+    public CheveratoUploader() {
+        this.website = WebSites.INSTANCE.getDefaultWebsite();
+        this.url = "http://" + website + "/api/1/upload";
+    }
 
     public CheveratoUploader(String website) {
         this.website = website;
         url = "http://" + website + "/api/1/upload";
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public String upload(Image image) {
@@ -43,15 +53,14 @@ public class CheveratoUploader implements PicUploader {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = Maps.newHashMap();
-                        params.put("key", Tools.getWebSiteTool().getApiKey(website));
+                        params.put("key", WebSites.INSTANCE.getApiKey(website));
                         params.put("source", file64);
                         params.put("format", "txt");
                         return params;
                     }
                 };
                 AppBase.getQueue().add(request);
-                // FIXME: 2016/8/19 应该可设置，上传超时时间
-                return future.get(10, TimeUnit.SECONDS);
+                return future.get(5, TimeUnit.SECONDS);
             }
         } catch (Exception e) {
             e.printStackTrace();

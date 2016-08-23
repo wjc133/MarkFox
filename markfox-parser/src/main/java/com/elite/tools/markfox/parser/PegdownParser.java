@@ -16,6 +16,10 @@ public class PegdownParser implements MarkdownParser {
     }
 
     public String parse(String markdown) {
+        // Standardize line endings:
+        markdown = markdown.replaceAll("\\r\\n", "\n");    // DOS to Unix
+        markdown = markdown.replaceAll("\\r", "\n");        // Mac to Unix
+        markdown = markdown.replaceAll("^[ \\t]+$", "");
         return processor.markdownToHtml(markdown);
     }
 }

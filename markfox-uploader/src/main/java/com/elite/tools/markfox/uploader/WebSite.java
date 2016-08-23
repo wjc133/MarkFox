@@ -9,6 +9,7 @@ public class WebSite {
     private String name;
     private String url;
     private String api;
+    private boolean isDefault;
 
     public String getName() {
         return name;
@@ -32,5 +33,13 @@ public class WebSite {
 
     public void setApi(String api) {
         this.api = api;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }

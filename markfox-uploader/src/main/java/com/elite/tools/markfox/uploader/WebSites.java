@@ -14,10 +14,13 @@ import java.util.Map;
  * Date: 2016/8/19
  * Time: 15:54
  */
-public class WebSites {
-    private Map<String, WebSite> webSiteMap = Maps.newHashMap();
+public enum  WebSites {
+    INSTANCE;
 
-    public WebSites() {
+    private Map<String, WebSite> webSiteMap = Maps.newHashMap();
+    private String defaultWebsite;
+
+    WebSites() {
         init();
     }
 
@@ -32,6 +35,12 @@ public class WebSites {
             List<WebSite> websites = JsonUtils.fromJson(json.toString().trim(), new TypeToken<List<WebSite>>() {
             }.getType());
             toMap(websites);
+
+            for (WebSite website : websites) {
+                if (website.isDefault()) {
+                    defaultWebsite = website.getUrl();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,5 +59,13 @@ public class WebSites {
 
     public String getUrl(String website) {
         return webSiteMap.get(website).getUrl();
+    }
+
+    public Map<String, WebSite> getWebSiteMap() {
+        return webSiteMap;
+    }
+
+    public String getDefaultWebsite() {
+        return defaultWebsite;
     }
 }
