@@ -88,7 +88,12 @@ public class Application {
      */
     private static void loadingConfig() {
         String json = ResourceUtils.getContent("conf/common.json");
-        AppBase.setConf(JsonUtils.fromJson(json, Settings.class));
+        if (StringUtils.isEmpty(json)) {
+            AppBase.setConf(Settings.DEFAULT_SETTINGS);
+            saveConfig();
+        }else {
+            AppBase.setConf(JsonUtils.fromJson(json, Settings.class));
+        }
     }
 
     /**

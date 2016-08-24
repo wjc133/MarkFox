@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -23,6 +20,9 @@ public class ResourceUtils {
         InputStream input = null;
         try {
             input = classLoader.getResourceAsStream(path);
+            if (input == null) {
+                return null;
+            }
             byte[] src = new byte[1024];
             StringBuilder builder = new StringBuilder();
             while (input.read(src) != -1) {
@@ -54,6 +54,14 @@ public class ResourceUtils {
     public static void saveContent(String path, String content) {
         FileOutputStream output = null;
         try {
+            File file = new File(path);
+            if (!file.exists()) {
+                File parent = file.getParentFile();
+                if (!parent.exists()) {
+                    parent.mkdir();
+                }
+                file.createNewFile();
+            }
             output = new FileOutputStream(path);
             output.write(content.getBytes());
             output.flush();

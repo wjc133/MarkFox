@@ -4,6 +4,8 @@ import com.elite.tools.markfox.client.widget.*;
 import com.elite.tools.markfox.common.layout.GridBagConstraintsBuilder;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
@@ -47,6 +49,33 @@ public class SettingView extends AbstractView {
     }
 
     private void configListener() {
+//        列表区设置
+        settingList.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) settingList.getLastSelectedPathComponent();
+                if (node == null) {
+                    return;
+                }
+                if (node.isLeaf()) {
+                    String nodeName = (String) node.getUserObject();
+                    switch (nodeName) {
+                        case "常规":
+                            settingContainer.replace("general");
+                            break;
+                        case "图片上传":
+                            settingContainer.replace("pic");
+                            break;
+                        case "其他":
+                            settingContainer.replace("other");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+//        按钮区设置
         applyBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,9 +108,9 @@ public class SettingView extends AbstractView {
                 .position(0, 0).size(1, 2).weight(0.2, 1).build());
 
         settingContainer = new CommonSetting();
-        settingContainer.add(new GeneralSettingPanle());
-        settingContainer.add(new PicSettingPanle());
-        settingContainer.add(new OtherSettingPanle());
+        settingContainer.add("general", new GeneralSettingPanle());
+        settingContainer.add("pic", new PicSettingPanle());
+        settingContainer.add("other", new OtherSettingPanle());
         mainPanel.add(settingContainer, new GridBagConstraintsBuilder()
                 .position(1, 0).size(1, 1).weight(1, 1).build());
 
@@ -96,13 +125,13 @@ public class SettingView extends AbstractView {
                 .position(1, 1).size(1, 1).weight(1, 0).build());
 
         container.add(mainPanel);
-        dialog.setBounds(0, 0, 850, 750);
+        dialog.setBounds(0, 0, 600, 560);
         dialog.setLocationRelativeTo(owner);
         dialog.setResizable(false);
         dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
-    public void show(){
+    public void show() {
         dialog.setVisible(true);
     }
 

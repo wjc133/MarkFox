@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 /**
@@ -39,6 +40,7 @@ public class SettingList extends JTree {
         setRootVisible(false);
         setRowHeight(27);
         setFont(new Font("幼圆",Font.BOLD,15));
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     }
 
     private DefaultMutableTreeNode buildTreeModel() {

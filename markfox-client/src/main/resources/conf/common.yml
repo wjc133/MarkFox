@@ -1,5 +1,0 @@
-pic:
-   website: imgchr.com
-   timeout: 5  #单位:s
-general:
-   firstBoot: true

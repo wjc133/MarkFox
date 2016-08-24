@@ -32,8 +32,7 @@ public class PicSettingPanle extends SettingPanle {
     }
 
     private void init() {
-        setLayout(new GridLayout(2, 1));
-        title = new JLabel("图片上传:");
+        title = new JLabel("图片上传");
         enableLabel = new JLabel("自动上传:");
         enableCheckBox = new JCheckBox("启用上传:");
         timeoutLabel = new JLabel("超时时间设置:");
@@ -45,7 +44,23 @@ public class PicSettingPanle extends SettingPanle {
             websiteBox.addItem(site);
         }
 
-        apply();
+        JPanel container = new JPanel(new GridLayout(3, 2));
+        container.add(enableLabel);
+        container.add(enableCheckBox);
+        container.add(timeoutLabel);
+        container.add(timeoutEdit);
+        container.add(websiteLabel);
+        container.add(websiteBox);
+
+//        add(title);
+        add(container);
+
+        loadData();
+    }
+
+    public void loadData() {
+        timeoutEdit.setText(String.valueOf(AppBase.getConf().getPic().getTimeout()));
+        websiteBox.setSelectedItem(AppBase.getConf().getPic().getWebsite());
     }
 
     @Override

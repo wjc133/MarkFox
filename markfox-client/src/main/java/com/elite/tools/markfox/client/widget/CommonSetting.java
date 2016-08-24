@@ -24,9 +24,13 @@ public class CommonSetting extends JPanel {
         setLayout(new CardLayout());
     }
 
-    public void add(SettingPanle panle) {
+    public void replace(String name) {
+        ((CardLayout) getLayout()).show(this, name);
+    }
+
+    public void add(String name, SettingPanle panle) {
         panles.add(panle);
-        super.add(panle);
+        super.add(name, panle);
     }
 
     public void apply() {
