@@ -17,6 +17,7 @@ public class Settings {
 
         general.setFirstBoot(true);
 
+        pic.setEnabled(true);
         pic.setTimeout(5000);
         pic.setWebsite("imgchr.com");
 

@@ -19,10 +19,11 @@ public class ResourceUtils {
     public static String getContent(String path) {
         InputStream input = null;
         try {
-            input = classLoader.getResourceAsStream(path);
-            if (input == null) {
+            File file = new File(path);
+            if (!file.exists()) {
                 return null;
             }
+            input = new FileInputStream(file);
             byte[] src = new byte[1024];
             StringBuilder builder = new StringBuilder();
             while (input.read(src) != -1) {
@@ -43,12 +44,16 @@ public class ResourceUtils {
         return null;
     }
 
-    public static ImageIcon getIcon(String path) {
-        URL resource = classLoader.getResource(path);
+    public static ImageIcon getIcon(URL resource) {
         if (resource == null) {
             return null;
         }
         return new ImageIcon(resource);
+    }
+
+    public static ImageIcon getIcon(String classpath) {
+        URL resource = classLoader.getResource(classpath);
+        return getIcon(resource);
     }
 
     public static void saveContent(String path, String content) {
@@ -58,9 +63,11 @@ public class ResourceUtils {
             if (!file.exists()) {
                 File parent = file.getParentFile();
                 if (!parent.exists()) {
-                    parent.mkdir();
+                    if (!parent.mkdirs()) {
+                        return;
+                    }
                 }
-                file.createNewFile();
+//                file.createNewFile();
             }
             output = new FileOutputStream(path);
             output.write(content.getBytes());

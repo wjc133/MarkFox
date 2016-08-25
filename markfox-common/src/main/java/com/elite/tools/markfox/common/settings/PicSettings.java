@@ -6,8 +6,17 @@ package com.elite.tools.markfox.common.settings;
  * Time: 下午8:37
  */
 public class PicSettings {
+    private boolean enabled;
     private int timeout;
     private String website;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public int getTimeout() {
         return timeout;
@@ -30,7 +39,8 @@ public class PicSettings {
     @Override
     public String toString() {
         return "PicSettings{" +
-                "timeout=" + timeout +
+                "enabled=" + enabled +
+                ", timeout=" + timeout +
                 ", website='" + website + '\'' +
                 '}';
     }

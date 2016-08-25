@@ -24,6 +24,7 @@ import java.io.InputStream;
  */
 public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+    private static final String CONFIG_HOME = System.getProperties().getProperty("user.home") + "/.markfox/conf";
 
     public static void configLogging() {
         String path = copyLoggingFile();
@@ -87,12 +88,12 @@ public class Application {
      * 读取配置信息,初始化时将配置载入内存
      */
     private static void loadingConfig() {
-        String json = ResourceUtils.getContent("conf/common.json");
+        String json = ResourceUtils.getContent(CONFIG_HOME + "/common.json");
         if (StringUtils.isEmpty(json)) {
             AppBase.setConf(Settings.DEFAULT_SETTINGS);
             saveConfig();
-        }else {
-            AppBase.setConf(JsonUtils.fromJson(json, Settings.class));
+        } else {
+            AppBase.setConf(JsonUtils.fromJson(json.trim(), Settings.class));
         }
     }
 
@@ -101,7 +102,7 @@ public class Application {
      */
     public static void saveConfig() {
         String json = JsonUtils.toJson(AppBase.getConf());
-        ResourceUtils.saveContent("conf/common.json", json);
+        ResourceUtils.saveContent(CONFIG_HOME + "/common.json", json);
     }
 
     private static void soar() {

@@ -1,10 +1,7 @@
 package com.elite.tools.markfox.client.widget;
 
 import com.elite.tools.markfox.common.AppBase;
-import com.elite.tools.markfox.common.settings.PicSettings;
 import com.elite.tools.markfox.uploader.CheveratoUploader;
-import com.elite.tools.markfox.uploader.PicUploader;
-import com.elite.tools.markfox.uploader.Uploaders;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +28,7 @@ public class EditArea extends JTextArea {
             Clipboard sysClip = Toolkit.getDefaultToolkit().getSystemClipboard();
             Transferable cc = sysClip.getContents(null);
             try {
-                if (cc != null && cc.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+                if (AppBase.getConf().getPic().isEnabled() && cc != null && cc.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     Image img = (Image) cc.getTransferData(DataFlavor.imageFlavor);
                     uploader.setWebsite(AppBase.getConf().getPic().getWebsite());
                     String url = uploader.upload(img, AppBase.getConf().getPic().getTimeout(), TimeUnit.MILLISECONDS);
