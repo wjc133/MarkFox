@@ -1,7 +1,11 @@
 package com.elite.tools.markfox.client.ui;
 
-import com.elite.tools.markfox.client.widget.*;
+import com.elite.tools.markfox.client.widget.MainMenu;
+import com.elite.tools.markfox.client.widget.MainToolBar;
+import com.elite.tools.markfox.client.widget.TabPanel;
+import com.elite.tools.markfox.client.widget.TabbedPopupMenu;
 import com.elite.tools.markfox.common.FileStorager;
+import com.elite.tools.markfox.common.utils.FileUtils;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +13,10 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -89,7 +96,7 @@ public class MainView extends AbstractView {
                     LOG.debug("file chooser canceled");
                 }
                 if (file != null) {
-                    TabPanel newTab = addNewTab();
+                    TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
                     pathMap.put(newTab, file.getAbsolutePath());//打开的时候
                     storager.setFile(file);
                     newTab.setText(storager.open());

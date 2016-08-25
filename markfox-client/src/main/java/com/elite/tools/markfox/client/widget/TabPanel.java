@@ -4,6 +4,7 @@ import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +12,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 /**
  * Created by wjc133
@@ -25,8 +24,10 @@ public class TabPanel extends JPanel {
 
     private EditArea editArea;
     private BrowserView previewArea;
+    private long lastPreviewTime = System.currentTimeMillis();
+    private static final long WAIT_TIME = 3 * 1000;
 
-    MarkdownParser parser = MarkdownParsers.createPegdownParser();
+    private MarkdownParser parser = MarkdownParsers.createPegdownParser();
 
     private TabPanel() {
     }
@@ -71,7 +72,16 @@ public class TabPanel extends JPanel {
     }
 
     private void preview() {
-        String markdown = parser.parse(editArea.getText());
+        String text = editArea.getText();
+        if (StringUtils.isEmpty(text.trim())) {
+            return;
+        }
+//        if (System.currentTimeMillis() - lastPreviewTime < WAIT_TIME) {
+//            return;
+//        }
+//        lastPreviewTime = System.currentTimeMillis();
+
+        String markdown = parser.parse(text);
         StringBuilder html = new StringBuilder();
         html.append("<html><head>");
 //        html.append("E:/Work/MarkFox/markfox-client/src/main/resources/style/default.css");
