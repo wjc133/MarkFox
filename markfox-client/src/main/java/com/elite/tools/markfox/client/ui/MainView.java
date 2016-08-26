@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +38,7 @@ public class MainView extends AbstractView {
     private JTabbedPane tabbedPane;
     private TabbedPopupMenu tabbedPopupMenu;
 
+    private UndoManager um;
     private int lastIndex;
     private int i = 1;
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
@@ -48,6 +52,7 @@ public class MainView extends AbstractView {
         initComponents();
         initWindow();
         bindAction();
+        EditAction();
     }
 
     private void bindAction() {
@@ -171,8 +176,8 @@ public class MainView extends AbstractView {
             }
         });
 
-        JMenuItem helpItem = menuBar.getMenu(4).getItem(0);
-        JMenuItem aboutItem = menuBar.getMenu(4).getItem(1);
+        JMenuItem helpItem = menuBar.getMenu(3).getItem(0);
+        JMenuItem aboutItem = menuBar.getMenu(3).getItem(1);
         helpItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -185,6 +190,53 @@ public class MainView extends AbstractView {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "MarkFox 0.0.1预览版,致力于成为最好用的Markdown编辑器",
                         "关于", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+    }
+
+    private void EditAction(){
+        um=new UndoManager();
+        JMenuItem Undotem = menuBar.getMenu(1).getItem(0);
+        JMenuItem CutItem = menuBar.getMenu(1).getItem(2);
+        JMenuItem CopyItem = menuBar.getMenu(1).getItem(3);
+        JMenuItem PasteItem = menuBar.getMenu(1).getItem(4);
+        JMenuItem AllItem = menuBar.getMenu(1).getItem(7);
+        CopyItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+                currentTab.getEditArea().copy();
+            }
+        });
+        PasteItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+                currentTab.getEditArea().paste();
+            }
+        });
+        CutItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+                currentTab.getEditArea().cut();
+            }
+        });
+        TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+        currentTab.getEditArea().getDocument().addUndoableEditListener(new UndoableEditListener() {
+            public void undoableEditHappened(UndoableEditEvent e) {
+                um.addEdit(e.getEdit());
+            }
+        });
+        Undotem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(um.canUndo())
+                {
+                    um.undo();
+                }
+            }
+        });
+        AllItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+                currentTab.getEditArea().selectAll();
             }
         });
     }

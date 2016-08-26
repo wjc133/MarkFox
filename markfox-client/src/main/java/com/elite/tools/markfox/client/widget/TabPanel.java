@@ -52,6 +52,10 @@ public class TabPanel extends JPanel {
         panel.configPreview();
         return panel;
     }
+    public EditArea getEditArea()
+    {
+        return editArea;
+    }
 
     private void configPreview() {
         editArea.getDocument().addDocumentListener(new DocumentListener() {

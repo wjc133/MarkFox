@@ -25,7 +25,6 @@ public class GeneralSettingPanle extends SettingPanle{
 //        add(title);
         add(panel);
     }
-
     @Override
     public void apply() {
 

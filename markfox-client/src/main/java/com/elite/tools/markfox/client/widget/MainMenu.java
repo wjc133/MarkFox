@@ -21,7 +21,7 @@ public class MainMenu extends JMenuBar {
     private void init() {
         JMenu fileMenu = new JMenu("文件");
         JMenu editMenu = new JMenu("编辑");
-        JMenu formatMenu = new JMenu("格式");
+      //  JMenu formatMenu = new JMenu("格式");
         JMenu insertMenu = new JMenu("插入");
         JMenu viewMenu = new JMenu("查看");
         JMenu toolMenu = new JMenu("工具");
@@ -29,7 +29,7 @@ public class MainMenu extends JMenuBar {
 
         createFileMenu(fileMenu);
         createEditMenu(editMenu);
-        createFormatMenu(formatMenu);
+ //       createFormatMenu(formatMenu);
 //        createInsertMenu(insertMenu);
 //        createViewMenu(viewMenu);
         createToolMenu(toolMenu);
@@ -42,8 +42,7 @@ public class MainMenu extends JMenuBar {
         JMenuItem openItem = new JMenuItem("打开");
         JMenuItem saveItem = new JMenuItem("保存");
         JMenuItem saveasItem = new JMenuItem("另存为");
-        JMenuItem pageItem = new JMenuItem("页面");
-        JMenuItem printItem = new JMenuItem("打印");
+       // JMenuItem printItem = new JMenuItem("打印");
         JMenuItem exitItem = new JMenuItem("退出");
 
         fileMenu.add(newItem);
@@ -51,8 +50,8 @@ public class MainMenu extends JMenuBar {
         fileMenu.add(saveItem);
         fileMenu.add(saveasItem);
         fileMenu.addSeparator();
-        fileMenu.add(pageItem);
-        fileMenu.add(printItem);
+       // fileMenu.add(pageItem);
+       // fileMenu.add(printItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
     }
@@ -63,8 +62,8 @@ public class MainMenu extends JMenuBar {
         JMenuItem cutItem = new JMenuItem("剪切");
         JMenuItem copyItem = new JMenuItem("复制");
         JMenuItem pasteItem = new JMenuItem("粘贴");
-        JMenuItem findItem = new JMenuItem("查找");
-        JMenuItem replaceItem = new JMenuItem("替换");
+       // JMenuItem findItem = new JMenuItem("查找");
+        //JMenuItem replaceItem = new JMenuItem("替换");
         JMenuItem selectallItem = new JMenuItem("全选");
         editMenu.add(undoItem);
         editMenu.addSeparator();
@@ -72,8 +71,8 @@ public class MainMenu extends JMenuBar {
         editMenu.add(copyItem);
         editMenu.add(pasteItem);
         editMenu.addSeparator();
-        editMenu.add(findItem);
-        editMenu.add(replaceItem);
+        //editMenu.add(findItem);
+        //editMenu.add(replaceItem);
         editMenu.addSeparator();
         editMenu.add(selectallItem);
     }
