@@ -167,7 +167,7 @@ public class MainView extends AbstractView {
             }
         });
 
-        JMenuItem optionItem = menuBar.getMenu(3).getItem(0);
+        JMenuItem optionItem = menuBar.getMenu(2).getItem(0);
         optionItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
