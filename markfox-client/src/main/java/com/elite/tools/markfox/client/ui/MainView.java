@@ -164,6 +164,7 @@ public class MainView extends AbstractView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeAllTabs();
+                System.exit(1);
             }
         });
 
