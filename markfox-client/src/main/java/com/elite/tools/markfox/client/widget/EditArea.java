@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -21,6 +22,12 @@ import java.util.concurrent.TimeUnit;
 public class EditArea extends JTextArea {
     private static final Logger LOG = LoggerFactory.getLogger(EditArea.class);
     private CheveratoUploader uploader = new CheveratoUploader();
+    private UndoManager undoManager = new UndoManager();
+
+    public EditArea() {
+        super();
+        getDocument().addUndoableEditListener(undoManager);
+    }
 
     @Override
     public void paste() {
@@ -45,6 +52,18 @@ public class EditArea extends JTextArea {
             } catch (Exception e) {
                 LOG.error("paste error: {}", e);
             }
+        }
+    }
+
+    public void undo() {
+        if (undoManager.canUndo()) {
+            undoManager.undo();
+        }
+    }
+
+    public void redo() {
+        if (undoManager.canRedo()) {
+            undoManager.redo();
         }
     }
 }

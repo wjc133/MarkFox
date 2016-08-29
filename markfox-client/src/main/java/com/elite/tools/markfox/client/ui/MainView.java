@@ -12,9 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +35,6 @@ public class MainView extends AbstractView {
     private JTabbedPane tabbedPane;
     private TabbedPopupMenu tabbedPopupMenu;
 
-    private UndoManager um;
     private int lastIndex;
     private int i = 1;
     private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
@@ -195,8 +191,7 @@ public class MainView extends AbstractView {
         });
     }
 
-    private void EditAction(){
-        um=new UndoManager();
+    private void EditAction() {
         JMenuItem Undotem = menuBar.getMenu(1).getItem(0);
         JMenuItem CutItem = menuBar.getMenu(1).getItem(2);
         JMenuItem CopyItem = menuBar.getMenu(1).getItem(3);
@@ -220,18 +215,11 @@ public class MainView extends AbstractView {
                 currentTab.getEditArea().cut();
             }
         });
-        TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
-        currentTab.getEditArea().getDocument().addUndoableEditListener(new UndoableEditListener() {
-            public void undoableEditHappened(UndoableEditEvent e) {
-                um.addEdit(e.getEdit());
-            }
-        });
+
         Undotem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(um.canUndo())
-                {
-                    um.undo();
-                }
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+                currentTab.getEditArea().undo();
             }
         });
         AllItem.addActionListener(new ActionListener() {
