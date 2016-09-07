@@ -1,12 +1,12 @@
 package com.elite.tools.markfox.uploader;
 
 import com.elite.tools.markfox.common.AppBase;
-import com.elite.tools.markfox.common.settings.PicSettings;
 import com.elite.tools.soar.AuthFailureError;
 import com.elite.tools.soar.Request;
 import com.elite.tools.soar.toolbox.RequestFuture;
 import com.elite.tools.soar.toolbox.StringRequest;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.Base64Utility;
 
 import javax.imageio.ImageIO;
@@ -28,7 +28,6 @@ public class CheveratoUploader implements PicUploader {
 
     public CheveratoUploader() {
         this.website = WebSites.INSTANCE.getDefaultWebsite();
-        this.url = "http://" + website + "/api/1/upload";
     }
 
     public CheveratoUploader(String website) {
@@ -38,9 +37,16 @@ public class CheveratoUploader implements PicUploader {
 
     public void setWebsite(String website) {
         this.website = website;
+        this.url = "http://" + website + "/api/1/upload";
     }
 
     public String upload(Image image, int timeout, TimeUnit unit) {
+        if (StringUtils.isEmpty(website)) {
+            return "";
+        }
+        if (StringUtils.isEmpty(url)) {
+            this.url = "http://" + website + "/api/1/upload";
+        }
         try {
             if (image instanceof BufferedImage) {
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
