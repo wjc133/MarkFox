@@ -14,6 +14,11 @@ import java.net.URL;
 public class MainToolBar extends JPanel {
     private static final MainToolBar INSTANCE = new MainToolBar();
 
+    private JButton newBtn = new JButton();
+    private JButton openBtn = new JButton();
+    private JButton saveBtn = new JButton();
+    private JButton feedbackBtn = new JButton();
+
     private MainToolBar() {
         init();
     }
@@ -21,17 +26,13 @@ public class MainToolBar extends JPanel {
     public static MainToolBar getInstance() {
         return INSTANCE;
     }
-
     private void init() {
         JButton button1 = new JButton("B ");
         JButton button2 = new JButton("I ");
         JButton button3 = new JButton("H1");
         JButton button4 = new JButton("H2");
         JButton iconButton1 = new JButton();
-        JButton newBtn = new JButton();
-        JButton openBtn = new JButton();
-        JButton saveBtn = new JButton();
-        JButton feedbackBtn = new JButton();
+
         button1.setSize(15, 15);
         button2.setSize(15, 15);
         button3.setSize(15, 15);
@@ -80,4 +81,22 @@ public class MainToolBar extends JPanel {
         setLayout(new BorderLayout());
         add(toolBar);
     }
+
+    public JButton getNewBtn()
+    {
+        return newBtn;
+    }
+    public JButton getOpenBtn()
+    {
+        return openBtn;
+    }
+    public JButton getSaveBtn()
+    {
+        return saveBtn;
+    }
+    public JButton getFeedbackBtn()
+    {
+        return feedbackBtn;
+    }
+
 }

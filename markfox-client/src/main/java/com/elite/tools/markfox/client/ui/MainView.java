@@ -49,6 +49,7 @@ public class MainView extends AbstractView {
         initWindow();
         bindAction();
         EditAction();
+        ToolAction();
     }
 
     private void bindAction() {
@@ -228,6 +229,74 @@ public class MainView extends AbstractView {
                 currentTab.getEditArea().selectAll();
             }
         });
+    }
+
+    private void ToolAction()
+    {
+        JButton newBtn = toolBar.getNewBtn();
+        JButton openBtn = toolBar.getOpenBtn();
+        JButton saveBtn =toolBar.getSaveBtn();
+        JButton feedbackBtn=toolBar.getFeedbackBtn();
+        newBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addNewTab();
+            }
+        });
+        openBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File file = null;
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setApproveButtonText("确定");
+                fileChooser.setDialogTitle("打开文件");
+
+                int result = fileChooser.showOpenDialog(frame);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    file = fileChooser.getSelectedFile();
+                    LOG.debug("file choose：{}", file.getName());
+                } else if (result == JFileChooser.CANCEL_OPTION) {
+                    LOG.debug("file chooser canceled");
+                }
+                if (file != null) {
+                    TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
+                    pathMap.put(newTab, file.getAbsolutePath());//打开的时候
+                    storager.setFile(file);
+                    newTab.setText(storager.open());
+                }
+
+            }
+        });
+        saveBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File file = null;
+                JFileChooser fileChooser = new JFileChooser();
+
+                TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();//当前标签
+                String path = pathMap.get(currentTab);//当前标签页路径
+                if (path == null) {
+                    int result = fileChooser.showSaveDialog(frame);
+                    if (result == JFileChooser.APPROVE_OPTION) { // 选择的是确定按钮
+                        file = fileChooser.getSelectedFile(); // 得到选择的文件
+                        pathMap.put(currentTab, file.getAbsolutePath());
+                        LOG.debug("file choose：{}", file.getName());
+                    } else if (result == JFileChooser.CANCEL_OPTION) {
+                        LOG.debug("file chooser canceled");
+                    }
+                } else {
+                    file = new File(path);
+                }
+
+                if (file != null) {
+                    storager.setFile(file).save(currentTab.getText());
+                }
+            }
+        });
+        feedbackBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "感谢您的反馈，请将您的反馈信息发送至邮箱wjc133@elt-group.com，谢谢您的支持！",
+                        "反馈", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
     }
 
     private void closeOtherTabs(int index) {
