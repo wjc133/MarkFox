@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
-
 /**
  * Created by wjc133
  * Date: 2016/7/21
@@ -57,6 +56,13 @@ public class MainView extends AbstractView {
         JMenuItem openItem = menuBar.getMenu(0).getItem(1);
         JMenuItem saveItem = menuBar.getMenu(0).getItem(2);
         JMenuItem saveAsItem = menuBar.getMenu(0).getItem(3);
+        JMenuItem exitItem =menuBar.getMenu(0).getItem(6);
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(1);
+            }
+        });
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 File file = null;
