@@ -22,7 +22,7 @@ public class GeneralSettingPanle extends SettingPanle{
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(temp, BorderLayout.CENTER);
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-//        add(title);
+//      add(title);
         add(panel);
     }
     @Override

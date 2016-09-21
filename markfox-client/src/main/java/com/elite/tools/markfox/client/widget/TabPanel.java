@@ -1,5 +1,6 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.client.ui.MainView;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
@@ -12,6 +13,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.io.File;
+import java.net.URL;
 
 /**
  * Created by wjc133
@@ -24,6 +27,7 @@ public class TabPanel extends JPanel {
 
     private EditArea editArea;
     private BrowserView previewArea;
+    private JTabbedPane tabbedPane;
     private long lastPreviewTime = System.currentTimeMillis();
     private static final long WAIT_TIME = 3 * 1000;
 
@@ -84,13 +88,26 @@ public class TabPanel extends JPanel {
 //            return;
 //        }
 //        lastPreviewTime = System.currentTimeMillis();
-
+        URL CssPath = MainView.class.getClassLoader().getResource("style/markdown.css");
         String markdown = parser.parse(text);
         StringBuilder html = new StringBuilder();
+        String path=null;
+        tabbedPane = MainView.getInstance().getTabbedPane();
+       // TabPanel currentTab = (TabPanel) tabbedPane.getSelectedComponent();
+        File file=new File("");
+        if(file!=null)
+         path=file.getAbsolutePath();
+
+        System.out.println("请注意这是我得到的绝对路径："+CssPath);
+
         html.append("<html><head>");
 //        html.append("E:/Work/MarkFox/markfox-client/src/main/resources/style/default.css");
-        html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");
+ //       html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");//...之前好的那个</head>"
+        html.append("<link rel=\"stylesheet\" href=\""+CssPath+"\" type=\"text/css\"> </head>");//错误版绝对路径
+       // html.append("<link rel=\"stylesheet\" href=\""+path+"\\markfox-client\\src\\conf\\markdown.css\" type=\"text/css\"></head>");//未知
+
         html.append("<link rel=\"stylesheet\" href=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.css\"></head>");
+        //html.append("<link rel=\"stylesheet\" href=\""+path+"\\markfox-client\\src\\conf\\MarkFox.css\" type=\"text/css\"></head>");
         html.append("<body>");
         html.append(markdown);
         //add js

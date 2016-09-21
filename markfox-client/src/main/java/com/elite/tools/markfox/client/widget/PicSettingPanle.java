@@ -53,7 +53,6 @@ public class PicSettingPanle extends SettingPanle {
 
 //        add(title);
         add(container);
-
         loadData();
     }
 
