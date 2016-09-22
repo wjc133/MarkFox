@@ -84,4 +84,28 @@ public class ResourceUtils {
             }
         }
     }
+
+    public static File loadFile(String fileName) {
+        if (fileName.startsWith("/")) {
+            return new File(fileName);
+        }
+        URL url = null;
+        try {
+            url = ClassHelper.getClassLoader().getResource(fileName);
+        } catch (Throwable t) {
+            LOG.warn("Fail to load " + fileName + " file: " + t.getMessage(), t);
+        }
+
+        if (url == null) {
+            LOG.warn("No " + fileName + " found on the class path.");
+            return null;
+        }
+
+        try {
+            return new File(url.toURI());
+        } catch (Throwable e) {
+            LOG.warn("Failed to load " + fileName + " file from " + fileName + "(ingore this file): " + e.getMessage(), e);
+        }
+        return null;
+    }
 }
