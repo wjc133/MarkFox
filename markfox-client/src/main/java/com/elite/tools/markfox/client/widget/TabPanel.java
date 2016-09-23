@@ -26,9 +26,6 @@ public class TabPanel extends JPanel {
 
     private EditArea editArea;
     private BrowserView previewArea;
-    private long lastPreviewTime = System.currentTimeMillis();
-    private static final long WAIT_TIME = 3 * 1000;
-
     private MarkdownParser parser = MarkdownParsers.createPegdownParser();
 
     private TabPanel() {
@@ -96,7 +93,7 @@ public class TabPanel extends JPanel {
             path = file.getAbsolutePath();
         }
 
-        System.out.println("请注意这是我得到的绝对路径：" + path);
+        LOG.debug("style css file path={}", path);
 
         html.append("<html><head>");
         //       html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");//...之前好的那个</head>"

@@ -1,8 +1,11 @@
 package com.elite.tools.markfox.uploader;
 
 import com.elite.tools.markfox.common.AppBase;
+import com.elite.tools.markfox.uploader.constants.UploadError;
 import com.elite.tools.soar.AuthFailureError;
 import com.elite.tools.soar.Request;
+import com.elite.tools.soar.Response;
+import com.elite.tools.soar.SoarError;
 import com.elite.tools.soar.toolbox.RequestFuture;
 import com.elite.tools.soar.toolbox.StringRequest;
 import com.google.common.collect.Maps;
@@ -77,6 +80,51 @@ public class CheveratoUploader implements PicUploader {
     @Override
     public String upload(Image obj) {
         return this.upload(obj, 5, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void asyncUpload(Image image, final UploadListener listener) {
+        listener.onUploadBegin();
+        if (StringUtils.isEmpty(website)) {
+            listener.onUploadError(UploadError.CONTENT_EMPTY_ERROR);
+            return;
+        }
+        if (StringUtils.isEmpty(url)) {
+            this.url = "http://" + website + "/api/1/upload";
+        }
+        try {
+            if (image instanceof BufferedImage) {
+                ByteArrayOutputStream output = new ByteArrayOutputStream();
+                ImageIO.write((BufferedImage) image, "png", output);
+                byte[] bytes = output.toByteArray();
+                final String file64 = Base64Utility.encode(bytes);
+                StringRequest request = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                listener.onUploadFinished(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(SoarError error) {
+                                listener.onUploadError(UploadError.SERVER_ERROR);
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = Maps.newHashMap();
+                        params.put("key", WebSites.INSTANCE.getApiKey(website));
+                        params.put("source", file64);
+                        params.put("format", "txt");
+                        return params;
+                    }
+                };
+                AppBase.getQueue().add(request);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

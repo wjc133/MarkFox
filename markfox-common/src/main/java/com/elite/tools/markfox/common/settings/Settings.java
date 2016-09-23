@@ -19,7 +19,7 @@ public class Settings {
 
         pic.setEnabled(true);
         pic.setTimeout(5000);
-        pic.setWebsite("imgchr.com");
+        pic.setWebsite("www.yikaowo.com");
 
         DEFAULT_SETTINGS.setGeneral(general);
         DEFAULT_SETTINGS.setPic(pic);

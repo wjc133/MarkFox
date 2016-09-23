@@ -57,8 +57,10 @@ public class PicSettingPanle extends SettingPanle {
     }
 
     public void loadData() {
-        timeoutEdit.setText(String.valueOf(AppBase.getConf().getPic().getTimeout()));
-        websiteBox.setSelectedItem(AppBase.getConf().getPic().getWebsite());
+        PicSettings pic = AppBase.getConf().getPic();
+        enableCheckBox.setSelected(pic.isEnabled());
+        timeoutEdit.setText(String.valueOf(pic.getTimeout()));
+        websiteBox.setSelectedItem(pic.getWebsite());
     }
 
     @Override

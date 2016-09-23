@@ -1,12 +1,10 @@
 package com.elite.tools.markfox.client.ui;
 
-import com.elite.tools.markfox.client.widget.MainMenu;
-import com.elite.tools.markfox.client.widget.MainToolBar;
-import com.elite.tools.markfox.client.widget.TabPanel;
-import com.elite.tools.markfox.client.widget.TabbedPopupMenu;
+import com.elite.tools.markfox.client.widget.*;
 import com.elite.tools.markfox.common.FileStorager;
 import com.elite.tools.markfox.common.utils.FileUtils;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+
 /**
  * Created by wjc133
  * Date: 2016/7/21
@@ -33,6 +32,7 @@ public class MainView extends AbstractView {
     private MainToolBar toolBar;
     private JTabbedPane tabbedPane;
     private TabbedPopupMenu tabbedPopupMenu;
+    private ProgressDialog progressDialog;
 
     private int lastIndex;
     private int i = 1;
@@ -56,7 +56,7 @@ public class MainView extends AbstractView {
         JMenuItem openItem = menuBar.getMenu(0).getItem(1);
         JMenuItem saveItem = menuBar.getMenu(0).getItem(2);
         JMenuItem saveAsItem = menuBar.getMenu(0).getItem(3);
-        JMenuItem exitItem =menuBar.getMenu(0).getItem(6);
+        JMenuItem exitItem = menuBar.getMenu(0).getItem(6);
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -237,12 +237,11 @@ public class MainView extends AbstractView {
         });
     }
 
-    private void ToolAction()
-    {
+    private void ToolAction() {
         JButton newBtn = toolBar.getNewBtn();
         JButton openBtn = toolBar.getOpenBtn();
-        JButton saveBtn =toolBar.getSaveBtn();
-        JButton feedbackBtn=toolBar.getFeedbackBtn();
+        JButton saveBtn = toolBar.getSaveBtn();
+        JButton feedbackBtn = toolBar.getFeedbackBtn();
         newBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addNewTab();
@@ -378,6 +377,7 @@ public class MainView extends AbstractView {
         menuBar = MainMenu.getInstance();
         toolBar = MainToolBar.getInstance();
         tabbedPopupMenu = TabbedPopupMenu.getInstance();
+        progressDialog = new ProgressDialog(frame);
 
         tabbedPane = new JTabbedPane();
         addNewTab();
@@ -388,20 +388,31 @@ public class MainView extends AbstractView {
     }
 
     private TabPanel addNewTab() {
-        TabPanel tabPanel = TabPanel.createTabPanel();
-        if (i == 1) {
-            tabbedPane.addTab("新文档", tabPanel);
-        } else {
-            tabbedPane.addTab("新文档" + "(" + i + ")", tabPanel);
-        }
-        tabbedPane.setSelectedIndex(i - 1);
-        i++;
-        return tabPanel;
+        return addNewTab(null);
     }
 
     private TabPanel addNewTab(String name) {
         TabPanel tabPanel = TabPanel.createTabPanel();
-        tabbedPane.addTab(name, tabPanel);
+        tabPanel.getEditArea().setListener(new EditArea.EditorListener() {
+            @Override
+            public void onImageUploadBegin() {
+                progressDialog.show("正在上传图片");
+            }
+
+            @Override
+            public void onImageUploadFinished() {
+                progressDialog.setVisible(false);
+            }
+        });
+        if (StringUtils.isEmpty(name)) {
+            if (i == 1) {
+                tabbedPane.addTab("新文档", tabPanel);
+            } else {
+                tabbedPane.addTab("新文档" + "(" + i + ")", tabPanel);
+            }
+        } else {
+            tabbedPane.addTab(name, tabPanel);
+        }
         tabbedPane.setSelectedIndex(i - 1);
         i++;
         return tabPanel;
