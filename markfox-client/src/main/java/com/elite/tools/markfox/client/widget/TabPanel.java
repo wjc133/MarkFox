@@ -26,6 +26,9 @@ public class TabPanel extends JPanel {
 
     private EditArea editArea;
     private BrowserView previewArea;
+    private long lastPreviewTime = System.currentTimeMillis();
+    private static final long WAIT_TIME = 3 * 1000;
+
     private MarkdownParser parser = MarkdownParsers.createPegdownParser();
 
     private TabPanel() {
@@ -86,25 +89,39 @@ public class TabPanel extends JPanel {
 
         String markdown = parser.parse(text);
         StringBuilder html = new StringBuilder();
-        String path = null;
+        String Csspath = null;
+        String prettifyPath=null;
+        String jqueryPath=null;
+        String prettifyJsPath=null;
 
-        File file = ResourceUtils.loadFile("style/markdown.css");
-        if (file != null && file.exists()) {
-            path = file.getAbsolutePath();
+        File cssfile = ResourceUtils.loadFile("style/markdown.css");
+        if (cssfile != null && cssfile.exists()) {
+            Csspath = cssfile.getAbsolutePath();
         }
 
-        LOG.debug("style css file path={}", path);
+        File prettifyfile = ResourceUtils.loadFile("style/MarkFox.css");
+        if (prettifyfile != null && prettifyfile.exists()) {
+            prettifyPath = prettifyfile.getAbsolutePath();
+        }
+        File jqueryfile = ResourceUtils.loadFile("style/jquery.js");
+        if (jqueryfile != null && jqueryfile.exists()) {
+            jqueryPath = jqueryfile.getAbsolutePath();
+        }
+        File prettifyJsfile = ResourceUtils.loadFile("style/prettify.js");
+        if (prettifyJsfile != null && prettifyJsfile.exists()) {
+            prettifyJsPath = prettifyJsfile.getAbsolutePath();
+        }
 
         html.append("<html><head>");
         //       html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");//...之前好的那个</head>"
-        html.append("<link rel=\"stylesheet\" href=\"").append(path).append("\" type=\"text/css\"></head>");
-
-        html.append("<link rel=\"stylesheet\" href=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.css\"></head>");
+        html.append("<link rel=\"stylesheet\" href=\"").append(Csspath).append("\" type=\"text/css\"></head>");
+        html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\"></head> ");
         html.append("<body>");
         html.append(markdown);
         //add js
-        html.append("<script src=\"http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js\"></script>");
-        html.append("<script src=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.js\"></script>");
+        html.append("<script src=\"").append(jqueryPath).append("\"></script>");
+        html.append("<script src=\"").append(prettifyJsPath).append("\"></script>");
+       // html.append("<script src=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.js\"></script>");
         html.append("<script>$(window).load(function(){$(\"pre\").addClass(\"prettyprint\");prettyPrint();})</script>");
         html.append("</body></html>");
         previewArea.getBrowser().loadHTML(html.toString());
