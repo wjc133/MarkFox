@@ -10,11 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.File;
-
 /**
  * Created by wjc133
  * Date: 2016/8/15
@@ -26,6 +27,7 @@ public class TabPanel extends JPanel {
 
     private EditArea editArea;
     private BrowserView previewArea;
+    private JScrollPane jScrollPane;
     private long lastPreviewTime = System.currentTimeMillis();
     private static final long WAIT_TIME = 3 * 1000;
 
@@ -37,27 +39,45 @@ public class TabPanel extends JPanel {
     private void init() {
         editArea = new EditArea();
         previewArea = new JxBrowserDemo().getBrowserView();
-
+        jScrollPane=new JScrollPane(editArea);
         editArea.setFont(new Font("宋体", Font.BOLD, 16));
         editArea.setLineWrap(true);
 
         //Layout Manager
         setLayout(new GridLayout(1, 2));
-        add(new JScrollPane(editArea));
+        add(jScrollPane);
         add(previewArea);
     }
+
 
     public static TabPanel createTabPanel() {
         TabPanel panel = new TabPanel();
         panel.init();
-//        panel.configEditor();
+//      panel.configEditor();
         panel.configPreview();
         return panel;
     }
 
-    public EditArea getEditArea() {
-        return editArea;
+    public void test()
+    {
+        jScrollPane.addAncestorListener(new AncestorListener() {
+            @Override
+            public void ancestorAdded(AncestorEvent event) {
+
+            }
+
+            @Override
+            public void ancestorRemoved(AncestorEvent event) {
+
+            }
+
+            @Override
+            public void ancestorMoved(AncestorEvent event) {
+
+            }
+        });
     }
+
 
     private void configPreview() {
         editArea.getDocument().addDocumentListener(new DocumentListener() {
@@ -113,7 +133,7 @@ public class TabPanel extends JPanel {
         }
 
         html.append("<html><head>");
-        //       html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");//...之前好的那个</head>"
+        //html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");
         html.append("<link rel=\"stylesheet\" href=\"").append(Csspath).append("\" type=\"text/css\"></head>");
         html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\"></head> ");
         html.append("<body>");
@@ -129,6 +149,15 @@ public class TabPanel extends JPanel {
 
     public void clear() {
         editArea.setText("");
+    }
+
+    public EditArea getEditArea() {
+        return editArea;
+    }
+
+    public JScrollPane getjScrollPane()
+    {
+        return jScrollPane;
     }
 
     public String getText() {
