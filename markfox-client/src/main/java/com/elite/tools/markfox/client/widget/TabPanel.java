@@ -66,6 +66,11 @@ public class TabPanel extends JPanel {
         return previewArea;
     }
 
+    public void goTop() {
+        editArea.setCaretPosition(0);
+        editScrollPane.getVerticalScrollBar().setValue(0);
+    }
+
     private void configPreview() {
         editArea.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -148,6 +153,7 @@ public class TabPanel extends JPanel {
 
     public void setText(String text) {
         editArea.setText(text);
+        goTop();
     }
 
     private void barAction() {

@@ -73,7 +73,7 @@ public class EditArea extends JTextArea {
                             LOG.warn("upload error");
                         }
                     });
-
+// 同步方法
 //                    String url = uploader.upload(img, AppBase.getConf().getPic().getTimeout(), TimeUnit.MILLISECONDS);
 //                    if (StringUtils.isEmpty(url)) {
 //                        return;
