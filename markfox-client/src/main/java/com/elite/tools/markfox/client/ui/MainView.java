@@ -5,9 +5,6 @@ import com.elite.tools.markfox.client.widget.*;
 import com.elite.tools.markfox.common.FileStorager;
 import com.elite.tools.markfox.common.utils.FileUtils;
 import com.google.common.collect.Maps;
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.JSValue;
-import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +12,10 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -47,56 +47,11 @@ public class MainView extends AbstractView {
     private MainView() {
         initComponents();
         initWindow();
-        barAction();
-        browseBarAction();
         bindAction();
         EditAction();
         ToolAction();
     }
 
-    private void barAction()
-    {
-        TabPanel currentTab=(TabPanel) tabbedPane.getSelectedComponent();
-        JScrollPane jsp=currentTab.getjScrollPane();
-        final JScrollBar jsb=jsp.getVerticalScrollBar();
-        jsb.addAdjustmentListener(new AdjustmentListener() {
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                int barValue;//滑动距离
-                int height;//总长度
-                double top;
-                barValue=jsb.getValue();
-                height=jsb.getHeight();
-                top=barValue*3;
-              //  System.out.println("滚动条长度："+barValue);
-              //  System.out.println("应该是高度吧："+height);
-                JxBrowserDemo.getBrower().executeJavaScript("window.scrollTo(0," +top+");");
-            }
-        });
-
-    }
-    private void browseBarAction()
-    {
-        double barValue;
-        TabPanel currentTab=(TabPanel) tabbedPane.getSelectedComponent();
-        JScrollPane jsp=currentTab.getjScrollPane();
-        JScrollBar jsb=jsp.getVerticalScrollBar();
-        System.out.println("准备获取滚动条长度了");
-        JxBrowserDemo.getBrower().executeJavaScript("window.onscroll=function()" +
-                "{var top=0;" +
-                " if(self.pageYOffset)" +
-                "{top=self.pageYOffset;}" +
-                "else if(document.documentElement&&document.documentElement.scrollTop)" +
-                "{top=document.documentElement.scrollTop;}" +
-                "else if(document.body)" +
-                "{top=document.body.scrollTop;}" +
-                "}");
-       // JSValue top=JxBrowserDemo.getBrower().executeJavaScriptAndReturnValue("document.top=top;document.top");
-        JSValue top=JxBrowserDemo.getBrower().executeJavaScriptAndReturnValue("top");
-        barValue=top.getNumber();
-        System.out.println("这个是浏览器的滚动条："+barValue);
-        jsb.setValue((int)barValue);
-    }
     private void bindAction() {
         JMenuItem newItem = menuBar.getMenu(0).getItem(0);
         JMenuItem openItem = menuBar.getMenu(0).getItem(1);
@@ -106,7 +61,7 @@ public class MainView extends AbstractView {
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(1);
+                System.exit(0);
             }
         });
         saveItem.addActionListener(new ActionListener() {
