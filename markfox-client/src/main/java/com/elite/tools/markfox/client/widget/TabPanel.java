@@ -4,6 +4,10 @@ import com.elite.tools.markfox.common.utils.ResourceUtils;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
+import com.teamdev.jxbrowser.chromium.dom.DOMElement;
+import com.teamdev.jxbrowser.chromium.dom.events.DOMEvent;
+import com.teamdev.jxbrowser.chromium.dom.events.DOMEventListener;
+import com.teamdev.jxbrowser.chromium.dom.events.DOMEventType;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,7 +54,7 @@ public class TabPanel extends JPanel {
         add(previewArea);
 
         barAction();
-//        browserBarAction();
+        browserBarAction();
     }
 
 
@@ -91,7 +95,8 @@ public class TabPanel extends JPanel {
 
     private void preview() {
         String text = editArea.getText();
-        if (StringUtils.isEmpty(text.trim())) {
+        text = text.trim();
+        if (StringUtils.isEmpty(text)) {
             return;
         }
 //        if (System.currentTimeMillis() - lastPreviewTime < WAIT_TIME) {
@@ -101,14 +106,14 @@ public class TabPanel extends JPanel {
 
         String markdown = parser.parse(text);
         StringBuilder html = new StringBuilder();
-        String Csspath = null;
+        String cssPath = null;
         String prettifyPath = null;
         String jqueryPath = null;
         String prettifyJsPath = null;
 
-        File cssfile = ResourceUtils.loadFile("style/markdown.css");
-        if (cssfile != null && cssfile.exists()) {
-            Csspath = cssfile.getAbsolutePath();
+        File cssFile = ResourceUtils.loadFile("style/markdown.css");
+        if (cssFile != null && cssFile.exists()) {
+            cssPath = cssFile.getAbsolutePath();
         }
 
         File prettifyfile = ResourceUtils.loadFile("style/MarkFox.css");
@@ -126,7 +131,7 @@ public class TabPanel extends JPanel {
 
         html.append("<html><head>");
         //html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");
-        html.append("<link rel=\"stylesheet\" href=\"").append(Csspath).append("\" type=\"text/css\"></head>");
+        html.append("<link rel=\"stylesheet\" href=\"").append(cssPath).append("\" type=\"text/css\"></head>");
         html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\"></head> ");
         html.append("<body>");
         html.append(markdown);
@@ -171,23 +176,14 @@ public class TabPanel extends JPanel {
 
     }
 
-//    private void browserBarAction() {
-//        double barValue;
-//        JScrollBar jsb = editScrollPane.getVerticalScrollBar();
-//        System.out.println("准备获取滚动条长度了");
-//        previewArea.getBrowser().executeJavaScript("window.onscroll=function()" +
-//                "{var top=0;" +
-//                " if(self.pageYOffset)" +
-//                "{top=self.pageYOffset;}" +
-//                "else if(document.documentElement&&document.documentElement.scrollTop)" +
-//                "{top=document.documentElement.scrollTop;}" +
-//                "else if(document.body)" +
-//                "{top=document.body.scrollTop;}" +
-//                "}");
-//        // JSValue top=JxBrowserDemo.getBrower().executeJavaScriptAndReturnValue("document.top=top;document.top");
-//        JSValue top = previewArea.getBrowser().executeJavaScriptAndReturnValue("top");
-//        barValue = top.getNumber();
-//        System.out.println("这个是浏览器的滚动条：" + barValue);
-//        jsb.setValue((int) barValue);
-//    }
+    private void browserBarAction() {
+        DOMElement element = previewArea.getBrowser().getDocument().getDocumentElement();
+        LOG.info("innerHtml", element.getInnerHTML());
+        element.addEventListener(DOMEventType.OnScroll, new DOMEventListener() {
+            @Override
+            public void handleEvent(DOMEvent domEvent) {
+                previewArea.getBrowser().executeJavaScript("alert('改变了')");
+            }
+        }, false);
+    }
 }

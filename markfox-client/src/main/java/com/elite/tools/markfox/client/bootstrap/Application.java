@@ -26,16 +26,18 @@ public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
     private static final String CONFIG_HOME = System.getProperties().getProperty("user.home") + "/.markfox/conf";
 
-    public static void configLogging() {
+    private static void configLogging() {
         String path = copyLoggingFile();
         if (StringUtils.isNotEmpty(path)) {
             System.setProperty("java.util.logging.config.file", path);
         }
     }
 
-    public static void julToSlf4j() {
+    private static void julToSlf4j() {
+//        LogManager.getLogManager().reset();
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
+//        java.util.logging.Logger.getLogger("global").setLevel(Level.FINEST);
     }
 
     private static String copyLoggingFile() {
@@ -73,8 +75,8 @@ public class Application {
         return null;
     }
 
-    public static void configAll() {
-        configLogging();
+    static void configAll() {
+//        configLogging();
         julToSlf4j();
 
         loadingConfig();

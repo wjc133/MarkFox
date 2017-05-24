@@ -20,6 +20,8 @@ public class PegdownParser implements MarkdownParser {
         markdown = markdown.replaceAll("\\r\\n", "\n");    // DOS to Unix
         markdown = markdown.replaceAll("\\r", "\n");        // Mac to Unix
         markdown = markdown.replaceAll("^[ \\t]+$", "");
+
+        markdown = markdown.replaceAll("\\n", "\n\n");  //解决换行问题
         return processor.markdownToHtml(markdown);
     }
 }
