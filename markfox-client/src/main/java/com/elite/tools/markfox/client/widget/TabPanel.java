@@ -1,8 +1,13 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.client.util.ScrollBarSyncer;
 import com.elite.tools.markfox.common.utils.ResourceUtils;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
+import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.JSValue;
+import com.teamdev.jxbrowser.chromium.events.ScriptContextAdapter;
+import com.teamdev.jxbrowser.chromium.events.ScriptContextEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +16,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.io.File;
 
 /**
@@ -30,6 +33,8 @@ public class TabPanel extends JPanel {
     private long lastPreviewTime = System.currentTimeMillis();
     private static final long WAIT_TIME = 3 * 1000;
 
+    private ScrollBarSyncer syncer;
+
     private MarkdownParser parser = MarkdownParsers.createPegdownParser();
 
     private TabPanel() {
@@ -46,15 +51,17 @@ public class TabPanel extends JPanel {
         setLayout(new GridLayout(1, 2));
         add(editScrollPane);
         add(previewArea);
-//        barAction();
-//        browserBarAction();
+
+        JScrollBar jsb = editScrollPane.getVerticalScrollBar();
+        syncer = new ScrollBarSyncer(jsb, previewArea.getBrowserView().getBrowser());
+
+        browserBarAction();
     }
 
 
     public static TabPanel createTabPanel() {
         TabPanel panel = new TabPanel();
         panel.init();
-//      panel.configEditor();
         panel.configPreview();
         return panel;
     }
@@ -95,6 +102,7 @@ public class TabPanel extends JPanel {
         String prettifyPath = null;
         String jqueryPath = null;
         String prettifyJsPath = null;
+        String controllerJsPath = null;
 
         File cssFile = ResourceUtils.loadFile("style/markdown.css");
         if (cssFile != null && cssFile.exists()) {
@@ -113,6 +121,10 @@ public class TabPanel extends JPanel {
         if (prettifyJsfile != null && prettifyJsfile.exists()) {
             prettifyJsPath = prettifyJsfile.getAbsolutePath();
         }
+        File controllerJsFile = ResourceUtils.loadFile("script/controller.js");
+        if (controllerJsFile != null && controllerJsFile.exists()) {
+            controllerJsPath = controllerJsFile.getAbsolutePath();
+        }
 
         html.append("<html><head>");
         html.append("<link rel=\"stylesheet\" href=\"").append(cssPath).append("\" type=\"text/css\">");
@@ -122,6 +134,9 @@ public class TabPanel extends JPanel {
         //add js
         html.append("<script src=\"").append(jqueryPath).append("\"></script>");
         html.append("<script src=\"").append(prettifyJsPath).append("\"></script>");
+        if (StringUtils.isNotBlank(controllerJsPath)) {
+            html.append("<script src=\"").append(controllerJsPath).append("\"></script>");
+        }
         html.append("<script>$(window).load(function(){$(\"pre\").addClass(\"prettyprint\");prettyPrint();})</script>");
         html.append("</body></html>");
         previewArea.getBrowserView().getBrowser().loadHTML(html.toString());
@@ -144,30 +159,14 @@ public class TabPanel extends JPanel {
         goTop();
     }
 
-    private void barAction() {
-        final JScrollBar jsb = editScrollPane.getVerticalScrollBar();
-        jsb.addAdjustmentListener(new AdjustmentListener() {
+    private void browserBarAction() {
+        final Browser browser = previewArea.getBrowserView().getBrowser();
+        browser.addScriptContextListener(new ScriptContextAdapter() {
             @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                int barValue = jsb.getValue();//滑动距离
-                int height = jsb.getMaximum() - jsb.getVisibleRect().height;//总长度
-                float percent = (float) barValue / height;
-                previewArea.getBrowserView().getBrowser().executeJavaScript("window.scrollTo(0," +
-                        percent + " * document.body.scrollHeight);");
+            public void onScriptContextCreated(ScriptContextEvent event) {
+                JSValue window = browser.executeJavaScriptAndReturnValue("window");
+                window.asObject().setProperty("scroller", syncer);
             }
         });
-
     }
-
-//    private void browserBarAction() {
-//        final JScrollBar jsb = editScrollPane.getVerticalScrollBar();
-//        final Browser browser = previewArea.getBrowser();
-//        browser.addScriptContextListener(new ScriptContextAdapter() {
-//            @Override
-//            public void onScriptContextCreated(ScriptContextEvent event) {
-//                JSValue window = browser.executeJavaScriptAndReturnValue("window");
-//                window.asObject().setProperty("scroller", new ScrollBarSyncer(jsb));
-//            }
-//        });
-//    }
 }
