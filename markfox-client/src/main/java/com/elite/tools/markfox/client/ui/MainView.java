@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,6 +95,23 @@ public class MainView extends AbstractView {
             public void actionPerformed(ActionEvent e) {
                 File file = null;
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        if (f.isDirectory()) {
+                            return true;
+                        } else {
+                            String filename = f.getName().toLowerCase();
+                            return filename.endsWith(".md") || filename.endsWith(".markdown");
+                        }
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Markdown文件(*.md)";
+                    }
+                });
+                fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.setApproveButtonText("确定");
                 fileChooser.setDialogTitle("打开文件");
 
@@ -252,6 +270,24 @@ public class MainView extends AbstractView {
             public void actionPerformed(ActionEvent e) {
                 File file = null;
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.addChoosableFileFilter(new FileFilter() {
+                    @Override
+                    public boolean accept(File f) {
+                        if (f.isDirectory()) {
+                            return true;
+                        } else {
+                            String filename = f.getName().toLowerCase();
+                            return filename.endsWith(".md") || filename.endsWith(".markdown");
+                        }
+                    }
+
+                    @Override
+                    public String getDescription() {
+                        return "Markdown文件(*.md)";
+                    }
+                });
+                fileChooser.setAcceptAllFileFilterUsed(false);
+
                 fileChooser.setApproveButtonText("确定");
                 fileChooser.setDialogTitle("打开文件");
 
