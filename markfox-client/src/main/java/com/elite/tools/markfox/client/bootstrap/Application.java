@@ -114,6 +114,8 @@ public class Application {
     private static void beautyEye() {
         try {
             System.setProperty("sun.java2d.noddraw", "true");
+            BeautyEyeLNFHelper.translucencyAtFrameInactive = false;
+            BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.generalNoTranslucencyShadow;
             BeautyEyeLNFHelper.launchBeautyEyeLNF();
             //取消设置按钮
             UIManager.put("RootPane.setupButtonVisible", false);

@@ -3,12 +3,6 @@ package com.elite.tools.markfox.client.widget;
 import com.elite.tools.markfox.common.utils.ResourceUtils;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
-import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
-import com.teamdev.jxbrowser.chromium.dom.DOMElement;
-import com.teamdev.jxbrowser.chromium.dom.events.DOMEvent;
-import com.teamdev.jxbrowser.chromium.dom.events.DOMEventListener;
-import com.teamdev.jxbrowser.chromium.dom.events.DOMEventType;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +25,7 @@ public class TabPanel extends JPanel {
     private static final Logger LOG = LoggerFactory.getLogger(TabPanel.class);
 
     private EditArea editArea;
-    private BrowserView previewArea;
+    private PreviewPanel previewArea;
     private JScrollPane editScrollPane;
     private long lastPreviewTime = System.currentTimeMillis();
     private static final long WAIT_TIME = 3 * 1000;
@@ -43,7 +37,7 @@ public class TabPanel extends JPanel {
 
     private void init() {
         editArea = new EditArea();
-        previewArea = new JxBrowserDemo().getBrowserView();
+        previewArea = new PreviewPanel();
         editScrollPane = new JScrollPane(editArea);
         editArea.setFont(new Font("宋体", Font.BOLD, 16));
         editArea.setLineWrap(true);
@@ -52,9 +46,8 @@ public class TabPanel extends JPanel {
         setLayout(new GridLayout(1, 2));
         add(editScrollPane);
         add(previewArea);
-
-        barAction();
-        browserBarAction();
+//        barAction();
+//        browserBarAction();
     }
 
 
@@ -66,11 +59,7 @@ public class TabPanel extends JPanel {
         return panel;
     }
 
-    public BrowserView getPreview() {
-        return previewArea;
-    }
-
-    public void goTop() {
+    private void goTop() {
         editArea.setCaretPosition(0);
         editScrollPane.getVerticalScrollBar().setValue(0);
     }
@@ -99,10 +88,6 @@ public class TabPanel extends JPanel {
         if (StringUtils.isEmpty(text)) {
             return;
         }
-//        if (System.currentTimeMillis() - lastPreviewTime < WAIT_TIME) {
-//            return;
-//        }
-//        lastPreviewTime = System.currentTimeMillis();
 
         String markdown = parser.parse(text);
         StringBuilder html = new StringBuilder();
@@ -130,18 +115,16 @@ public class TabPanel extends JPanel {
         }
 
         html.append("<html><head>");
-        //html.append("<link rel=\"stylesheet\" href=\"http://kevinburke.bitbucket.org/markdowncss/markdown.css\"></head>");
-        html.append("<link rel=\"stylesheet\" href=\"").append(cssPath).append("\" type=\"text/css\"></head>");
-        html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\"></head> ");
-        html.append("<body>");
+        html.append("<link rel=\"stylesheet\" href=\"").append(cssPath).append("\" type=\"text/css\">");
+        html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\">");
+        html.append("</head><body>");
         html.append(markdown);
         //add js
         html.append("<script src=\"").append(jqueryPath).append("\"></script>");
         html.append("<script src=\"").append(prettifyJsPath).append("\"></script>");
-        // html.append("<script src=\"http://apps.bdimg.com/libs/prettify/r298/prettify.min.js\"></script>");
         html.append("<script>$(window).load(function(){$(\"pre\").addClass(\"prettyprint\");prettyPrint();})</script>");
         html.append("</body></html>");
-        previewArea.getBrowser().loadHTML(html.toString());
+        previewArea.getBrowserView().getBrowser().loadHTML(html.toString());
     }
 
     public void clear() {
@@ -169,21 +152,22 @@ public class TabPanel extends JPanel {
                 int barValue = jsb.getValue();//滑动距离
                 int height = jsb.getMaximum() - jsb.getVisibleRect().height;//总长度
                 float percent = (float) barValue / height;
-                previewArea.getBrowser().executeJavaScript("window.scrollTo(0," +
+                previewArea.getBrowserView().getBrowser().executeJavaScript("window.scrollTo(0," +
                         percent + " * document.body.scrollHeight);");
             }
         });
 
     }
 
-    private void browserBarAction() {
-        DOMElement element = previewArea.getBrowser().getDocument().getDocumentElement();
-        LOG.info("innerHtml", element.getInnerHTML());
-        element.addEventListener(DOMEventType.OnScroll, new DOMEventListener() {
-            @Override
-            public void handleEvent(DOMEvent domEvent) {
-                previewArea.getBrowser().executeJavaScript("alert('改变了')");
-            }
-        }, false);
-    }
+//    private void browserBarAction() {
+//        final JScrollBar jsb = editScrollPane.getVerticalScrollBar();
+//        final Browser browser = previewArea.getBrowser();
+//        browser.addScriptContextListener(new ScriptContextAdapter() {
+//            @Override
+//            public void onScriptContextCreated(ScriptContextEvent event) {
+//                JSValue window = browser.executeJavaScriptAndReturnValue("window");
+//                window.asObject().setProperty("scroller", new ScrollBarSyncer(jsb));
+//            }
+//        });
+//    }
 }

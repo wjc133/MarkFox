@@ -17,10 +17,12 @@ public class JxBrowserDemo {
     private static final Logger LOG = LoggerFactory.getLogger(JxBrowserDemo.class);
 
     private BrowserView browserView;
+
     public JxBrowserDemo() {
         BrowserPreferences.setChromiumSwitches(
                 "--disable-web-security",
-                "--allow-file-access-from-files");
+                "--allow-file-access-from-files",
+                "--remote-debugging-port=9222");
         Browser browser = new Browser();
         browserView = new BrowserView(browser);
         if (LOG.isDebugEnabled()) {
@@ -31,9 +33,24 @@ public class JxBrowserDemo {
                 }
             });
         }
+        String remoteDebuggingURL = browser.getRemoteDebuggingURL();
+        LOG.info("remote debugging url >>> {}", remoteDebuggingURL);
     }
 
     public BrowserView getBrowserView() {
         return browserView;
     }
+
+//    public static void main(String[] args) {
+//        JxBrowserDemo demo = new JxBrowserDemo();
+//
+//        JFrame frame = new JFrame("JxBrowser - Hello World");
+//        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        frame.add(demo.getBrowserView(), BorderLayout.CENTER);
+//        frame.setSize(500, 400);
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//
+//        demo.getBrowserView().getBrowser().loadURL("http://www.yy.com");
+//    }
 }
