@@ -1,5 +1,12 @@
 var scrolling = false;
 
+var app = new Vue({
+    el: '#foxApp',
+    data: {
+        message: 'Hello Vue!'
+    }
+});
+
 var sync = function () {
     window.scroller.unbindAction();
     var top = $(window).scrollTop();

@@ -13,4 +13,8 @@ public class MarkdownParsers {
     public static MarkdownParser createSimpleParser() {
         return new MarkdownJParser();
     }
+
+    public static MarkdownParser createFlexmarkParser() {
+        return new FlexmarkParser();
+    }
 }

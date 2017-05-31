@@ -1,13 +1,11 @@
 package com.elite.tools.markfox.client.widget;
 
 import com.elite.tools.markfox.client.util.ScrollBarSyncer;
-import com.elite.tools.markfox.common.utils.ResourceUtils;
 import com.elite.tools.markfox.parser.MarkdownParser;
 import com.elite.tools.markfox.parser.MarkdownParsers;
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.JSValue;
-import com.teamdev.jxbrowser.chromium.events.ScriptContextAdapter;
-import com.teamdev.jxbrowser.chromium.events.ScriptContextEvent;
+import com.teamdev.jxbrowser.chromium.events.FrameLoadEvent;
+import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.io.File;
 
 /**
  * Created by wjc133
@@ -35,7 +32,9 @@ public class TabPanel extends JPanel {
 
     private ScrollBarSyncer syncer;
 
-    private MarkdownParser parser = MarkdownParsers.createPegdownParser();
+    private MarkdownParser parser = MarkdownParsers.createFlexmarkParser();
+
+    private Callback callback;
 
     private TabPanel() {
     }
@@ -55,9 +54,12 @@ public class TabPanel extends JPanel {
         JScrollBar jsb = editScrollPane.getVerticalScrollBar();
         syncer = new ScrollBarSyncer(jsb, previewArea.getBrowserView().getBrowser());
 
-        browserBarAction();
+//        browserBarAction();
     }
 
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
 
     public static TabPanel createTabPanel() {
         TabPanel panel = new TabPanel();
@@ -87,6 +89,15 @@ public class TabPanel extends JPanel {
                 LOG.debug("editArea document changed!");
             }
         });
+        Browser browser = previewArea.getBrowserView().getBrowser();
+        browser.addLoadListener(new LoadAdapter() {
+            @Override
+            public void onDocumentLoadedInFrame(FrameLoadEvent frameLoadEvent) {
+                if (callback != null) {
+                    callback.onPreviewAreaReady();
+                }
+            }
+        });
     }
 
     private void preview() {
@@ -97,49 +108,9 @@ public class TabPanel extends JPanel {
         }
 
         String markdown = parser.parse(text);
-        StringBuilder html = new StringBuilder();
-        String cssPath = null;
-        String prettifyPath = null;
-        String jqueryPath = null;
-        String prettifyJsPath = null;
-        String controllerJsPath = null;
-
-        File cssFile = ResourceUtils.loadFile("style/markdown.css");
-        if (cssFile != null && cssFile.exists()) {
-            cssPath = cssFile.getAbsolutePath();
-        }
-
-        File prettifyfile = ResourceUtils.loadFile("style/MarkFox.css");
-        if (prettifyfile != null && prettifyfile.exists()) {
-            prettifyPath = prettifyfile.getAbsolutePath();
-        }
-        File jqueryfile = ResourceUtils.loadFile("style/jquery.js");
-        if (jqueryfile != null && jqueryfile.exists()) {
-            jqueryPath = jqueryfile.getAbsolutePath();
-        }
-        File prettifyJsfile = ResourceUtils.loadFile("style/prettify.js");
-        if (prettifyJsfile != null && prettifyJsfile.exists()) {
-            prettifyJsPath = prettifyJsfile.getAbsolutePath();
-        }
-        File controllerJsFile = ResourceUtils.loadFile("script/controller.js");
-        if (controllerJsFile != null && controllerJsFile.exists()) {
-            controllerJsPath = controllerJsFile.getAbsolutePath();
-        }
-
-        html.append("<html><head>");
-        html.append("<link rel=\"stylesheet\" href=\"").append(cssPath).append("\" type=\"text/css\">");
-        html.append("<link rel=\"stylesheet\" href=\"").append(prettifyPath).append("\"type=\"text/css\">");
-        html.append("</head><body>");
-        html.append(markdown);
-        //add js
-        html.append("<script src=\"").append(jqueryPath).append("\"></script>");
-        html.append("<script src=\"").append(prettifyJsPath).append("\"></script>");
-        if (StringUtils.isNotBlank(controllerJsPath)) {
-            html.append("<script src=\"").append(controllerJsPath).append("\"></script>");
-        }
-        html.append("<script>$(window).load(function(){$(\"pre\").addClass(\"prettyprint\");prettyPrint();})</script>");
-        html.append("</body></html>");
-        previewArea.getBrowserView().getBrowser().loadHTML(html.toString());
+        markdown = markdown.replaceAll("\\n", "\\\\n");
+        Browser browser = previewArea.getBrowserView().getBrowser();
+        browser.executeJavaScript("$('#content').html('" + markdown + "');$('pre').addClass('prettyprint');prettyPrint();");
     }
 
     public void clear() {
@@ -159,14 +130,18 @@ public class TabPanel extends JPanel {
         goTop();
     }
 
-    private void browserBarAction() {
-        final Browser browser = previewArea.getBrowserView().getBrowser();
-        browser.addScriptContextListener(new ScriptContextAdapter() {
-            @Override
-            public void onScriptContextCreated(ScriptContextEvent event) {
-                JSValue window = browser.executeJavaScriptAndReturnValue("window");
-                window.asObject().setProperty("scroller", syncer);
-            }
-        });
+//    private void browserBarAction() {
+//        final Browser browser = previewArea.getBrowserView().getBrowser();
+//        browser.addScriptContextListener(new ScriptContextAdapter() {
+//            @Override
+//            public void onScriptContextCreated(ScriptContextEvent event) {
+//                JSValue window = browser.executeJavaScriptAndReturnValue("window");
+//                window.asObject().setProperty("scroller", syncer);
+//            }
+//        });
+//    }
+
+    public interface Callback {
+        void onPreviewAreaReady();
     }
 }

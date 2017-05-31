@@ -108,4 +108,12 @@ public class ResourceUtils {
         }
         return null;
     }
+
+    public static String getFilePath(String fileName) {
+        File cssFile = loadFile(fileName);
+        if (cssFile != null && cssFile.exists()) {
+            return cssFile.getAbsolutePath();
+        }
+        return null;
+    }
 }

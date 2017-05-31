@@ -123,10 +123,16 @@ public class MainView extends AbstractView {
                     LOG.debug("file chooser canceled");
                 }
                 if (file != null) {
-                    TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
+                    final TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
                     pathMap.put(newTab, file.getAbsolutePath());//打开的时候
                     storager.setFile(file);
-                    newTab.setText(storager.open());
+                    TabPanel.Callback callback = new TabPanel.Callback() {
+                        @Override
+                        public void onPreviewAreaReady() {
+                            newTab.setText(storager.open());
+                        }
+                    };
+                    newTab.setCallback(callback);
                 }
             }
         });
@@ -299,10 +305,16 @@ public class MainView extends AbstractView {
                     LOG.debug("file chooser canceled");
                 }
                 if (file != null) {
-                    TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
+                    final TabPanel newTab = addNewTab(FileUtils.getFileNameNoEx(file.getName()));
                     pathMap.put(newTab, file.getAbsolutePath());//打开的时候
                     storager.setFile(file);
-                    newTab.setText(storager.open());
+                    TabPanel.Callback callback = new TabPanel.Callback() {
+                        @Override
+                        public void onPreviewAreaReady() {
+                            newTab.setText(storager.open());
+                        }
+                    };
+                    newTab.setCallback(callback);
                 }
 
             }

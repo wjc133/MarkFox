@@ -1,5 +1,6 @@
 package com.elite.tools.markfox.client.widget;
 
+import com.elite.tools.markfox.common.utils.ResourceUtils;
 import com.teamdev.jxbrowser.chromium.demo.JxBrowserDemo;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 
@@ -22,6 +23,8 @@ public class PreviewPanel extends JPanel {
         browserView = new JxBrowserDemo().getBrowserView();
         setLayout(new BorderLayout());
         add(browserView);
+        String filePath = ResourceUtils.getFilePath("index.html");
+        browserView.getBrowser().loadURL(filePath);
     }
 
 

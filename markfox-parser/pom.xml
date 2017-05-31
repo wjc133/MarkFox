@@ -17,5 +17,12 @@
             <artifactId>pegdown</artifactId>
             <version>1.6.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>0.19.5</version>
+        </dependency>
+
     </dependencies>
 </project>

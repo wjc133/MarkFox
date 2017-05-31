@@ -32,8 +32,8 @@ public class ScrollBarSyncer {
                     int barValue = bar.getValue();//滑动距离
                     int height = bar.getMaximum() - bar.getVisibleRect().height;//总长度
                     float percent = (float) barValue / height;
-                    browser.executeJavaScript("$(window).off('scroll');window.scrollTo(0," +
-                            percent + " * document.body.scrollHeight);setTimeout( function(){ $(window).on('scroll', sync ); },200);");
+                    browser.executeJavaScript("window.scrollTo(0," +
+                            percent + " * document.body.scrollHeight);");
                 }
             }
         };
