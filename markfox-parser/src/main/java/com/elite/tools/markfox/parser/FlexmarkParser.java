@@ -4,6 +4,7 @@ import com.vladsch.flexmark.ast.Node;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.util.options.MutableDataSet;
 
 import java.util.Arrays;
@@ -17,9 +18,9 @@ public class FlexmarkParser implements MarkdownParser {
 
     FlexmarkParser() {
         MutableDataSet options = new MutableDataSet();
-//        options.setFrom(ParserEmulationProfile.MARKDOWN);
+        options.setFrom(ParserEmulationProfile.MARKDOWN);
         options.set(Parser.EXTENSIONS, Arrays.asList(TablesExtension.create()));
-        options.set(HtmlRenderer.SOFT_BREAK, "<br/>");
+        options.set(HtmlRenderer.SOFT_BREAK, "<br/>"); //解决换行问题
         parser = Parser.builder(options).build();
         renderer = HtmlRenderer.builder(options).build();
     }
