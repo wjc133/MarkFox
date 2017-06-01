@@ -14,6 +14,7 @@
         <module>markfox-uploader</module>
         <module>markfox-common</module>
         <module>markfox-fastui</module>
+        <module>markfox-native</module>
     </modules>
 
     <properties>
