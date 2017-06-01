@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <jni.h>
-#include <errno.h>
+
+#include <windows.h>
+#include <ShellAPI.h>
+#include <tchar.h>
+#include <malloc.h>
+#include <memory.h>
+
+#include <vector>
+#include <string>
+#include <sstream>
 
 JavaVM *jvm;
 JNIEnv *env;
@@ -16,10 +24,10 @@ void JVM_Init()
     vm_args.ignoreUnrecognized = false;
     vm_args.nOptions = 0;
 
-    char classpath[1024] = "-Djava.class.path=";
+    char classpath[1024] = "-Djava.class.path=./markfox.jar;";
     size_t len;
     char *env_classpath;
-    errno_t err = _dupenv_s(&env_classpath,&len,"CLASSPATH");
+    errno_t err = _dupenv_s(&env_classpath, &len, "CLASSPATH");
 
     if (err)
     {
@@ -51,6 +59,31 @@ void JVM_Destroy()
     jvm = NULL;
 }
 
-int main(){
-	JVM_Init();
+int main() {
+    JVM_Init();
+    jclass mainClass = env->FindClass("com/elite/tools/markfox/client/bootstrap/BootStrap");
+    // jclass mainClass = env->FindClass("java/lang/String");
+    if (!mainClass)
+    {
+        printf("Load Failed!\n");
+        JVM_Destroy();
+        return -1;
+    }
+    printf("Load Success!\n");
+    jmethodID mainMethod = env->GetStaticMethodID(mainClass, "main", "([Ljava/lang/String;)V");
+    if (!mainMethod)
+    {
+        printf("Load Failed!\n");
+        JVM_Destroy();
+        return -1;
+    }
+    printf("Load Success!\n");
+    env->CallStaticVoidMethod(mainClass, mainMethod);
+    jthrowable exc = env->ExceptionOccurred();
+    if (exc)
+    {
+        printf("Error invoking main method\n");
+    }
+    JVM_Destroy();
+    return 0;
 }
