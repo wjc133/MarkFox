@@ -24,16 +24,19 @@ void JVM_Init()
     vm_args.ignoreUnrecognized = false;
     vm_args.nOptions = 0;
 
-    char classpath[1024] = "-Djava.class.path=./markfox.jar;";
-    size_t len;
-    char *env_classpath;
-    errno_t err = _dupenv_s(&env_classpath, &len, "CLASSPATH");
+    char classpath[1024] = "-Djava.class.path=./markfox.jar";
+    // size_t len;
+    // char *env_classpath;
+    // errno_t err = _dupenv_s(&env_classpath, &len, "CLASSPATH");
 
-    if (err)
-    {
-        printf("Cannot found classpath in EnvPath!\n");
-    }
-    strcat_s(classpath, env_classpath);
+    // printf("env=%s\n", env_classpath);
+
+    // if (err)
+    // {
+    //     printf("Cannot found classpath in EnvPath!\n");
+    // }
+    // strcat_s(classpath, env_classpath);
+    // strcat_s(classpath, "E:/Work/MarkFox/markfox-native/build/Debug/jre64");
     options[0].optionString = classpath;
     // options[0].optionString = "-Djava.class.path=C:/Program Files/Java/jdk1.8.0_20";
     vm_args.nOptions++;
