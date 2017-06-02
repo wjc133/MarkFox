@@ -2,9 +2,6 @@ package com.elite.tools.markfox.uploader;
 
 import com.elite.tools.markfox.uploader.constants.UploadError;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by wjc133
  * Date: 2016/6/15
@@ -12,12 +9,6 @@ import java.util.concurrent.TimeUnit;
  */
 public interface Uploader<T> {
     String upload(T obj);
-
-    String upload(T obj, int timeout, TimeUnit unit);
-
-    List<String> batchUpload(List<T> objList);
-
-    List<String> batchUpload(List<T> objList, int timeout, TimeUnit unit);
 
     void asyncUpload(T obj, UploadListener listener);
 

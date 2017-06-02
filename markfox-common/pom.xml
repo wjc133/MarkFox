@@ -13,8 +13,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.wjc133</groupId>
-            <artifactId>soar-core</artifactId>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
         </dependency>
     </dependencies>
 </project>

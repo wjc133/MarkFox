@@ -1,6 +1,6 @@
 package com.elite.tools.markfox.uploader;
 
-import com.elite.tools.soar.toolbox.JsonUtils;
+import com.elite.tools.markfox.common.AppBase;
 import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  * Date: 2016/8/19
  * Time: 15:54
  */
-public enum  WebSites {
+public enum WebSites {
     INSTANCE;
 
     private Map<String, WebSite> webSiteMap = Maps.newHashMap();
@@ -32,7 +32,7 @@ public enum  WebSites {
             while (input.read(src) != -1) {
                 json.append(new String(src));
             }
-            List<WebSite> websites = JsonUtils.fromJson(json.toString().trim(), new TypeToken<List<WebSite>>() {
+            List<WebSite> websites = AppBase.getGson().fromJson(json.toString().trim(), new TypeToken<List<WebSite>>() {
             }.getType());
             toMap(websites);
 

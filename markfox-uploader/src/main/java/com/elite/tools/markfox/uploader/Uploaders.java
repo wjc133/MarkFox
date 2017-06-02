@@ -7,11 +7,12 @@ package com.elite.tools.markfox.uploader;
  */
 public class Uploaders {
     private static PicUploader picUploader;
+
     public static PicUploader getDefaultPicUploader() {
         if (picUploader == null) {
             synchronized (Uploaders.class) {
                 if (picUploader == null) {
-                    picUploader = new CheveratoUploader();
+                    picUploader = new CunTuKuUploader();
                 }
             }
         }

@@ -3,8 +3,6 @@ package com.elite.tools.markfox.client.bootstrap;
 import com.elite.tools.markfox.common.AppBase;
 import com.elite.tools.markfox.common.settings.Settings;
 import com.elite.tools.markfox.common.utils.ResourceUtils;
-import com.elite.tools.soar.toolbox.JsonUtils;
-import com.elite.tools.soar.toolbox.Soar;
 import org.apache.commons.lang3.StringUtils;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.slf4j.Logger;
@@ -82,8 +80,6 @@ public class Application {
         loadingConfig();
 
         beautyEye();
-
-        soar();
     }
 
     /**
@@ -95,7 +91,7 @@ public class Application {
             AppBase.setConf(Settings.DEFAULT_SETTINGS);
             saveConfig();
         } else {
-            AppBase.setConf(JsonUtils.fromJson(json.trim(), Settings.class));
+            AppBase.setConf(AppBase.getGson().fromJson(json.trim(), Settings.class));
         }
     }
 
@@ -103,12 +99,8 @@ public class Application {
      * 将内存中的配置回写到磁盘文件中
      */
     public static void saveConfig() {
-        String json = JsonUtils.toJson(AppBase.getConf());
+        String json = AppBase.getGson().toJson(AppBase.getConf());
         ResourceUtils.saveContent(CONFIG_HOME + "/common.json", json);
-    }
-
-    private static void soar() {
-        AppBase.setQueue(Soar.newRequestQueue());
     }
 
     private static void beautyEye() {

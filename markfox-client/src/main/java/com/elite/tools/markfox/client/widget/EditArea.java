@@ -1,7 +1,7 @@
 package com.elite.tools.markfox.client.widget;
 
 import com.elite.tools.markfox.common.AppBase;
-import com.elite.tools.markfox.uploader.CheveratoUploader;
+import com.elite.tools.markfox.uploader.CunTuKuUploader;
 import com.elite.tools.markfox.uploader.Uploader;
 import com.elite.tools.markfox.uploader.constants.UploadError;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,7 @@ import java.awt.datatransfer.Transferable;
  */
 public class EditArea extends JTextArea {
     private static final Logger LOG = LoggerFactory.getLogger(EditArea.class);
-    private CheveratoUploader uploader = new CheveratoUploader();
+    private CunTuKuUploader uploader = new CunTuKuUploader();
     private UndoManager undoManager = new UndoManager();
     private EditorListener listener;
 
@@ -44,7 +44,6 @@ public class EditArea extends JTextArea {
             try {
                 if (AppBase.getConf().getPic().isEnabled() && cc != null && cc.isDataFlavorSupported(DataFlavor.imageFlavor)) {
                     Image img = (Image) cc.getTransferData(DataFlavor.imageFlavor);
-                    uploader.setWebsite(AppBase.getConf().getPic().getWebsite());
 
                     uploader.asyncUpload(img, new Uploader.UploadListener() {
                         @Override

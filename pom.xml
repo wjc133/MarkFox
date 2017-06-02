@@ -30,6 +30,9 @@
         <!--<jxbrowser.version>6.6.1</jxbrowser.version>-->
         <fastxml.version>1.0.0</fastxml.version>
         <snake.yaml.version>1.17</snake.yaml.version>
+
+        <retrofit.version>2.1.0</retrofit.version>
+        <okhttp.version>3.6.0</okhttp.version>
     </properties>
 
     <dependencyManagement>
@@ -109,12 +112,6 @@
                 <version>1.0.0</version>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>org.bouncycastle</groupId>-->
-                <!--<artifactId>bcprov-jdk16</artifactId>-->
-                <!--<version>1.46</version>-->
-            <!--</dependency>-->
-
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-api</artifactId>
@@ -122,9 +119,15 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github.wjc133</groupId>
-                <artifactId>soar-core</artifactId>
-                <version>0.0.1</version>
+                <groupId>com.squareup.retrofit2</groupId>
+                <artifactId>retrofit</artifactId>
+                <version>${retrofit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>logging-interceptor</artifactId>
+                <version>${okhttp.version}</version>
             </dependency>
 
             <dependency>

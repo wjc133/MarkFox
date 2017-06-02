@@ -29,19 +29,10 @@
             <artifactId>markfox-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.bouncycastle</groupId>-->
-        <!--<artifactId>bcprov-jdk16</artifactId>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.wjc133</groupId>
-            <artifactId>soar-core</artifactId>
         </dependency>
     </dependencies>
 

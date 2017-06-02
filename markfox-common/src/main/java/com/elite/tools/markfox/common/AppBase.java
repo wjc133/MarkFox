@@ -1,7 +1,7 @@
 package com.elite.tools.markfox.common;
 
 import com.elite.tools.markfox.common.settings.Settings;
-import com.elite.tools.soar.RequestQueue;
+import com.google.gson.Gson;
 
 /**
  * Created by wjc133
@@ -9,15 +9,13 @@ import com.elite.tools.soar.RequestQueue;
  * Time: 15:48
  */
 public class AppBase {
-    private static RequestQueue mQueue;
+
     private static Settings conf;
 
-    public static RequestQueue getQueue() {
-        return mQueue;
-    }
+    private static Gson gson = new Gson();
 
-    public static void setQueue(RequestQueue queue) {
-        mQueue = queue;
+    public static Gson getGson() {
+        return gson;
     }
 
     public static Settings getConf() {
